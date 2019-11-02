@@ -17,7 +17,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid attributes' do
-      it 'creates new answer to the question' do
+      it 'saves a new answer in db' do
         expect do
           post :create,
                params: { answer: attributes_for(:answer),
