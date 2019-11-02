@@ -31,6 +31,12 @@ RSpec.describe AnswersController, type: :controller do
 
         expect(response).to redirect_to assigns(:question)
       end
+
+      it 'assigns the answer to correct question' do
+        post :create, params: { answer: attributes_for(:answer),
+                                question_id: question.id }
+        expect(assigns(:answer).question).to eq question
+      end
     end
 
     context 'with invalid attributes' do
