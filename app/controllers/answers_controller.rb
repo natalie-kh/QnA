@@ -1,12 +1,12 @@
 class AnswersController < ApplicationController
-  before_action :question, only: %i[new create]
+  before_action :load_question, only: %i[new create]
 
   def new
-    @answer = question.answers.build
+    @answer = @question.answers.build
   end
 
   def create
-    @answer = question.answers.build(answer_params)
+    @answer = @question.answers.build(answer_params)
 
     if @answer.save
       redirect_to @question
@@ -17,7 +17,7 @@ class AnswersController < ApplicationController
 
   private
 
-  def question
+  def load_question
     @question = Question.find(params[:question_id])
   end
 
