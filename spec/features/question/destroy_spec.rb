@@ -14,7 +14,7 @@ feature 'Qiestion owner User can destroy the question', "
       sign_in(user)
 
       visit question_path(question)
-      click_on 'Delete Question'
+      click_on 'Delete'
 
       expect(page).to have_content 'Your question successfully deleted.'
       expect(page).have_current_path questions_path
@@ -24,16 +24,16 @@ feature 'Qiestion owner User can destroy the question', "
       sign_in(user2)
 
       visit question_path(question)
-      click_on 'Delete Question'
+      click_on 'Delete'
 
       expect(page).to have_content 'You are not authorized for this.'
       expect(page).have_current_path questions_path
     end
   end
 
-  scenario 'Unauthenticated user tries to ask a question' do
+  scenario 'Unauthenticated user tries to delete a question' do
     visit question_path(question)
-    click_on 'Delete Question'
+    click_on 'Delete'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
