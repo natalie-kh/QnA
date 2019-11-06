@@ -28,6 +28,13 @@ RSpec.describe AnswersController, type: :controller do
                                 question_id: question.id }
         expect(assigns(:answer).question).to eq question
       end
+
+      it 'assigns the answer to current_user' do
+        post :create, params: { answer: attributes_for(:answer),
+                                question_id: question.id }
+
+        expect(assigns(:answer).user).to eq user
+      end
     end
 
     context 'with invalid attributes' do
