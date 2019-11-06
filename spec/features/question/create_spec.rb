@@ -12,7 +12,7 @@ feature 'User can create question', "
       sign_in(user)
 
       visit questions_path
-      click_on 'Ask question'
+      click_on 'Ask Question'
     end
 
     scenario 'asks a question' do
