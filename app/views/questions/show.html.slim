@@ -1,2 +1,24 @@
-h1= @question.title
-p= @question.body
+= render 'shared/errors', resource: @answer
+
+div.card
+  div.card-header
+    h1= @question.title
+  div.card-body
+    p= @question.body
+
+=render 'answers/form'
+br
+
+-if @question.answers.present?
+  h2= 'All Answers'
+  div.card
+    = render @question.answers
+-else
+  p No answers yet
+
+/= form_with model: [ @question, @answer ] do |f|
+/  = f.label :body
+/  = f.text_area :body
+/  = f.submit 'Ask'
+
+

@@ -1,13 +1,9 @@
-h1 Existing Questions
+h1 All Questions
 
 -if @questions.present?
-
-  table class="table table-striped table-dark table-hover"
-    tr
-      th Question
-      th Action
-    = render @questions
+      div.card
+        = render @questions
 -else
   p No questions yet
 
-p= link_to 'Ask question', new_question_path
+p= link_to 'Ask Question', new_question_path

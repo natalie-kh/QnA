@@ -1,4 +1,7 @@
-tr
-  th= question.title
-  th= link_to 'Show', question_path(question)
+div.card
+  div.card-body
+    h5.card-title
+      p=link_to question.title, question_path(question)
+    p.card-text= truncate(question.body, length: 200, escape: false)
+
 
