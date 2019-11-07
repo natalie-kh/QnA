@@ -58,12 +58,14 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    before { login(user) }
 
     context 'with valid attributes' do
+      before { login(user) }
+
       it 'saves a new question in db' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
+
       it 'redirects to show view' do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to assigns(:question)
@@ -76,12 +78,25 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'with invalid attributes' do
+      before { login(user) }
+
       it 'does not save the question' do
         expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
       end
       it 're-renders new view' do
         post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to render_template :new
+      end
+    end
+
+    context 'for unauthorized user' do
+
+      it 'does not save the question' do
+        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
+      end
+      it 'redirects to sign_in form' do
+        post :create, params: { question: attributes_for(:question, :invalid) }
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end
@@ -152,6 +167,18 @@ RSpec.describe QuestionsController, type: :controller do
       it 're-render question' do
         delete :destroy, params: { id: question }
         expect(response).to redirect_to question_path(question)
+      end
+    end
+
+    context 'for unauthorized user' do
+
+      it "doesn't delete the question" do
+        expect { delete :destroy, params: { id: question } }.not_to change(Question, :count)
+      end
+
+      it 'redirects to sign_in form' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end

@@ -28,4 +28,14 @@ feature 'User can sign up', "
 
     expect(page).to have_content 'Email has already been taken'
   end
+
+  scenario 'New user tries to sign up with wrong password confirmation' do
+    fill_in 'Email', with: 'new@test.com'
+    fill_in 'Password', with: '12345678'
+    fill_in 'Password confirmation', with: '123456781'
+
+    click_button 'Sign up'
+
+    expect(page).to have_content "Password confirmation doesn't match Password"
+  end
 end
