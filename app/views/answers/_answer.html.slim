@@ -1,3 +1,4 @@
 div.card
   div.card-body
     p.card-text= answer.body
+    = link_to 'Delete Answer', answer_path(answer), method: :delete

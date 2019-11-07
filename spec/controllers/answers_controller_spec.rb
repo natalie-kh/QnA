@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let!(:question) { create(:question) }
+  let(:author) { create(:user) }
+  let!(:question) { create(:question, user: author) }
 
   describe 'POST #create' do
     before { login(user) }
@@ -52,6 +53,38 @@ RSpec.describe AnswersController, type: :controller do
                        question_id: question }
 
         expect(response).to render_template 'questions/show'
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:answer) { create(:answer, question: question, user: author) }
+
+    before { answer }
+
+    context 'for answer author' do
+      before { login(author) }
+
+      it 'deletes the answer' do
+        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to index view' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+
+    context 'for not answer author' do
+      before { login(user) }
+
+      it "doesn't delete the answer" do
+        expect { delete :destroy, params: { id: answer } }.not_to change(Answer, :count)
+      end
+
+      it 're-render question' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question_path(question)
       end
     end
   end
