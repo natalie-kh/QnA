@@ -1,17 +1,26 @@
 class AnswersController < ApplicationController
-  before_action :load_question, only: %i[new create]
-
-  def new
-    @answer = @question.answers.build
-  end
+  before_action :authenticate_user!
+  before_action :load_question, only: %i[create]
+  before_action :load_answer, only: %i[destroy]
 
   def create
-    @answer = @question.answers.build(answer_params)
+    @answer = Answer.new(answer_params)
+    @answer.question = @question
+    @answer.user = current_user
 
     if @answer.save
-      redirect_to @question
+      redirect_to @question, notice: 'Your answer successfully created.'
     else
-      render :new
+      render 'questions/show'
+    end
+  end
+
+  def destroy
+    if current_user.author?(@answer)
+      @answer.destroy
+      redirect_to question_path(@answer.question), notice: 'Your answer successfully deleted.'
+    else
+      redirect_to question_path(@answer.question), notice: 'You are not authorized for this.'
     end
   end
 
@@ -19,6 +28,10 @@ class AnswersController < ApplicationController
 
   def load_question
     @question = Question.find(params[:question_id])
+  end
+
+  def load_answer
+    @answer = Answer.find(params[:id])
   end
 
   def answer_params
