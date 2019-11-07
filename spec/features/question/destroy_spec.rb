@@ -26,13 +26,13 @@ feature 'Question owner can destroy the question', "
       sign_in(user)
       visit question_path(question)
 
-      expect(page).to have_no_content 'Delete'
+      expect(page).to have_no_link 'Delete'
     end
   end
 
   scenario 'Unauthenticated user tries to delete a question' do
     visit question_path(question)
 
-    expect(page).to have_no_content 'Delete'
+    expect(page).to have_no_link 'Delete'
   end
 end

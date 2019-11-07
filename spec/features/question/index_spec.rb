@@ -5,7 +5,7 @@ feature 'User can show question list', "
   As an authenticated user
   I'd like to be able to show question list
 " do
-  given!(:questions) { create_list(:question, 3) }
+  given!(:questions) { create_list(:question, 3, user: user) }
   given(:user) { create(:user) }
 
   scenario 'Authenticated user shows question list' do

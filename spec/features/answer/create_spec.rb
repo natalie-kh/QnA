@@ -6,7 +6,7 @@ feature 'User can create answers for a question', "
   I'd like to be able to write answers to questions
 " do
   given(:user) { create(:user) }
-  given!(:question) { create(:question) }
+  given!(:question) { create(:question, user: user) }
 
   describe 'Authenticated user' do
     background do
