@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Qiestion owner User can destroy the question', "
+feature 'Question owner can destroy the question', "
   In order to destroy question from a community
   As an authenticated user
   I'd like to be able to delete the question
@@ -17,7 +17,7 @@ feature 'Qiestion owner User can destroy the question', "
       click_on 'Delete'
 
       expect(page).to have_content 'Your question successfully deleted.'
-      expect(page).have_current_path questions_path
+      expect(current_path).to eq questions_path
     end
 
     scenario "deletes another user's question" do
@@ -27,7 +27,7 @@ feature 'Qiestion owner User can destroy the question', "
       click_on 'Delete'
 
       expect(page).to have_content 'You are not authorized for this.'
-      expect(page).have_current_path questions_path
+      expect(current_path).to eq question_path(question)
     end
   end
 
