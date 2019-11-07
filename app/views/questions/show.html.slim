@@ -5,7 +5,8 @@ div.card
     h1= @question.title
   div.card-body
     p= @question.body
-    = link_to 'Delete', question_path(@question), method: :delete
+    -if current_user&.author?(@question)
+      = link_to 'Delete', question_path(@question), method: :delete
 
 =render 'answers/form'
 br
@@ -16,10 +17,5 @@ br
     = render @question.answers
 -else
   p No answers yet
-
-/= form_with model: [ @question, @answer ] do |f|
-/  = f.label :body
-/  = f.text_area :body
-/  = f.submit 'Ask'
 
 

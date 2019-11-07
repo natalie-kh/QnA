@@ -22,19 +22,15 @@ feature 'Question owner can destroy the question', "
 
     scenario "deletes another user's question" do
       sign_in(user2)
-
       visit question_path(question)
-      click_on 'Delete'
 
-      expect(page).to have_content 'You are not authorized for this.'
-      expect(current_path).to eq question_path(question)
+      expect(page).to have_no_content 'Delete'
     end
   end
 
   scenario 'Unauthenticated user tries to delete a question' do
     visit question_path(question)
-    click_on 'Delete'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to have_no_content 'Delete'
   end
 end

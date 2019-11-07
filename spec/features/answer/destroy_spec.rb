@@ -13,7 +13,6 @@ feature 'Answer author can destroy the answer', "
   describe 'Authenticated user' do
     scenario 'deletes his answer' do
       sign_in(author)
-
       visit question_path(question)
       click_on 'Delete Answer'
 
@@ -23,19 +22,15 @@ feature 'Answer author can destroy the answer', "
 
     scenario "deletes another user's answer" do
       sign_in(user)
-
       visit question_path(question)
-      click_on 'Delete Answer'
 
-      expect(page).to have_content 'You are not authorized for this.'
-      expect(current_path).to eq question_path(question)
+      expect(page).to have_no_content 'Delete Answer'
     end
   end
 
   scenario 'Unauthenticated user tries to delete a question' do
     visit question_path(question)
-    click_on 'Delete Answer'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to have_no_content 'Delete Answer'
   end
 end
