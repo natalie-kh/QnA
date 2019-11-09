@@ -174,5 +174,22 @@ RSpec.describe AnswersController, type: :controller do
         expect(response.status).to eq 401
       end
     end
+
+    context 'for not answer author' do
+      before { login(user) }
+
+      it 'does not update answer' do
+        expect do
+          patch :update,
+                params: { id: answer, answer: { body: 'New Body'}, format: :js }
+        end.to_not change(answer, :body)
+      end
+
+      it 're-render question' do
+        patch :update,
+              params: { id: answer, answer: { body: 'New Body'}, format: :js }
+        expect(response).to redirect_to question_path(question)
+      end
+    end
   end
 end
