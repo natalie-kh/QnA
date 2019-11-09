@@ -1,5 +1,3 @@
-= render 'shared/errors', resource: @answer
-
 div.card
   div.card-header
     h1= @question.title
@@ -8,14 +6,18 @@ div.card
     -if current_user&.author?(@question)
       = link_to 'Delete', question_path(@question), method: :delete
 
+.answer-errors
+  = render 'shared/errors', resource: @answer
+
 =render 'answers/form' if current_user
 br
 
--if @question.answers.present?
-  h2= 'All Answers'
-  div.card
-    = render @question.answers
--else
-  p No answers yet
+.answers
+  -if @question.answers.present?
+    h2= 'All Answers'
+    div.card
+      = render @question.answers
+  -else
+    p No answers yet
 
 

@@ -15,7 +15,7 @@ feature 'User can create answers for a question', "
       visit question_path(question)
     end
 
-    scenario 'answers the question' do
+    scenario 'answers the question', js: true do
       fill_in 'answer_body', with: 'Answer Body'
       click_on 'Answer the Question'
 
@@ -24,14 +24,14 @@ feature 'User can create answers for a question', "
       expect(page).to have_content 'Answer Body'
     end
 
-    scenario 'creates answer with errors' do
+    scenario 'creates answer with errors', js: true do
       click_on 'Answer the Question'
 
       expect(page).to have_content "Body can't be blank"
     end
   end
 
-  scenario 'Unauthenticated user tries to answer a question' do
+  scenario 'Unauthenticated user tries to answer a question', js: true do
     visit question_path(question)
 
     expect(page).to have_no_button 'Answer the Question'

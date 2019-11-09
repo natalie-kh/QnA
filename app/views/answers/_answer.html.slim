@@ -1,5 +1,5 @@
 div.card
   div.card-body
     p.card-text= answer.body
-    -if current_user&.author?(answer)
+    -if current_user&.author?(answer) && answer.persisted?
       = link_to 'Delete Answer', answer_path(answer), method: :delete

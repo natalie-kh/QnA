@@ -14,26 +14,26 @@ RSpec.describe AnswersController, type: :controller do
         expect do
           post :create,
                params: { answer: attributes_for(:answer),
-                         question_id: question }
+                         question_id: question, format: :js }
         end.to change(Answer, :count).by(1)
       end
 
       it 'redirects to show question view' do
         post :create, params: { answer: attributes_for(:answer),
-                                question_id: question.id }
+                                question_id: question.id, format: :js }
 
-        expect(response).to redirect_to assigns(:question)
+        expect(response).to render_template :create
       end
 
       it 'assigns the answer to correct question' do
         post :create, params: { answer: attributes_for(:answer),
-                                question_id: question.id }
+                                question_id: question.id, format: :js }
         expect(assigns(:answer).question).to eq question
       end
 
       it 'assigns the answer to current_user' do
         post :create, params: { answer: attributes_for(:answer),
-                                question_id: question.id }
+                                question_id: question.id, format: :js }
 
         expect(assigns(:answer).user).to eq user
       end
@@ -46,16 +46,16 @@ RSpec.describe AnswersController, type: :controller do
         expect do
           post :create,
                params: { answer: attributes_for(:answer, :invalid),
-                         question_id: question }
+                         question_id: question, format: :js }
         end.to_not change(Answer, :count)
       end
 
-      it 're-renders new view' do
+      it 'renders create js view' do
         post :create,
              params: { answer: attributes_for(:answer, :invalid),
-                       question_id: question }
+                       question_id: question, format: :js }
 
-        expect(response).to render_template 'questions/show'
+        expect(response).to render_template :create
       end
     end
 
@@ -64,16 +64,16 @@ RSpec.describe AnswersController, type: :controller do
         expect do
           post :create,
                params: { answer: attributes_for(:answer, :invalid),
-                         question_id: question }
+                         question_id: question, format: :js }
         end.to_not change(Answer, :count)
       end
 
-      it 'redirects to sign_in form' do
+      it 'returns 401: Unauthorized' do
         post :create,
              params: { answer: attributes_for(:answer, :invalid),
-                       question_id: question }
+                       question_id: question, format: :js }
 
-        expect(response).to redirect_to new_user_session_path
+        expect(response.status).to eq 401
       end
     end
   end
