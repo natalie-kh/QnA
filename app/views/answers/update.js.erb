@@ -1,0 +1,6 @@
+$('.answer-errors').html('<%= render 'shared/errors', resource: @answer%>');
+
+<% if !@answer.errors.present? %>
+$('.answers').html('<%= j render @question.answers %>');
+$('.container').prepend('<div class="alert alert-info">Your answer successfully updated.</div>');
+<% end %>
