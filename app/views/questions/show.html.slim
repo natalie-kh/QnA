@@ -1,16 +1,17 @@
-div.card
-  div.card-header
-    h1= @question.title
-  div.card-body
-    p= @question.body
-    -if current_user&.author?(@question)
-      = link_to 'Delete', question_path(@question), method: :delete
+.question-errors
 
-.answer-errors
-  = render 'shared/errors', resource: @answer
+.question
+  div.card
+    div.card-header
+      h1= @question.title
+    div.card-body
+      p= @question.body
+      -if current_user&.author?(@question)
+        = link_to 'Delete', question_path(@question), method: :delete
+        span |
+        = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: @question.id }
 
-=render 'answers/form' if current_user
-br
+  = render 'edit'
 
 .answers
   -if @question.answers.present?
@@ -19,5 +20,11 @@ br
       = render @question.answers
   -else
     p No answers yet
+
+.answer-errors
+  = render 'shared/errors', resource: @answer
+
+=render 'answers/form' if current_user
+br
 
 

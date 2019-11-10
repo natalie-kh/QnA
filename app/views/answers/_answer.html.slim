@@ -8,7 +8,7 @@ div.card class= "answer-#{answer.id}"
 
 = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }  do |f|
   = f.label :body
-  = f.text_area :body, placeholder: 'Edit answer', rows: 7, cols: 60
+  = f.text_area :body, placeholder: 'Edit answer', rows: 2, cols: 60
   br
   = f.submit 'Save'
   br

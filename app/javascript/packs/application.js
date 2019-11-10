@@ -14,6 +14,7 @@ require("channels")
 //= require twitter/bootstrap
 
 require("packs/answers")
+require("packs/questions")
 
 //= require_tree .
 
