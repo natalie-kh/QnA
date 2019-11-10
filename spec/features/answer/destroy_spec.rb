@@ -11,7 +11,7 @@ feature 'Answer author can destroy the answer', "
   given!(:answer) { create(:answer, question: question, user: author)}
 
   describe 'Authenticated user' do
-    scenario 'deletes his answer' do
+    scenario 'deletes his answer', js: true do
       sign_in(author)
       visit question_path(question)
 
@@ -30,16 +30,16 @@ feature 'Answer author can destroy the answer', "
       visit question_path(question)
 
       within '.answers' do
-        expect(page).to have_no_link 'Delete Answer'
+        expect(page).to have_no_link 'Delete'
       end
     end
   end
 
-  scenario 'Unauthenticated user tries to delete a question' do
+  scenario 'Unauthenticated user tries to delete an answer' do
     visit question_path(question)
 
     within '.answers' do
-      expect(page).to have_no_link 'Delete Answer'
+      expect(page).to have_no_link 'Delete'
     end
   end
 end

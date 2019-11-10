@@ -85,12 +85,12 @@ RSpec.describe AnswersController, type: :controller do
       before { login(author) }
 
       it 'deletes the answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
       end
 
-      it 'redirects to index view' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question_path(question)
+      it 'renders destroy view' do
+        delete :destroy, params: { id: answer, format: :js }
+        expect(response).to render_template :destroy
       end
     end
 
@@ -98,23 +98,23 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
 
       it "doesn't delete the answer" do
-        expect { delete :destroy, params: { id: answer } }.not_to change(Answer, :count)
+        expect { delete :destroy, params: { id: answer }, format: :js }.not_to change(Answer, :count)
       end
 
-      it 're-render question' do
-        delete :destroy, params: { id: answer }
+      it 'renders destroy view' do
+        delete :destroy, params: { id: answer }, format: :js
         expect(response).to redirect_to question_path(question)
       end
     end
 
     context 'for unauthorized user' do
       it "doesn't delete the answer" do
-        expect { delete :destroy, params: { id: answer } }.not_to change(Answer, :count)
+        expect { delete :destroy, params: { id: answer }, format: :js }.not_to change(Answer, :count)
       end
 
-      it 'redirects to sign_in form' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to new_user_session_path
+      it 'returns 401: Unauthorized' do
+        delete :destroy, params: { id: answer }, format: :js
+        expect(response.status).to eq 401
       end
     end
   end
