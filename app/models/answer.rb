@@ -5,6 +5,8 @@ class Answer < ApplicationRecord
   validates :body, presence: true
   validates_uniqueness_of :question_id, if: :validate_uniqueness_of_accepted_answer
 
+  default_scope { order(accepted: :desc) }
+
   def accept!
     question.answers.update_all(accepted: false)
 
