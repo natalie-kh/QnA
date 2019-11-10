@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: %i[create]
-  before_action :load_answer, only: %i[destroy update]
+  before_action :load_answer, only: %i[destroy update accept]
 
   def create
     @answer = @question.answers.create(answer_params.merge(user: current_user))
@@ -23,6 +23,16 @@ class AnswersController < ApplicationController
       @answer.destroy
     else
       redirect_to question_path(@answer.question), notice: 'You are not authorized for this.'
+    end
+  end
+
+  def accept
+    @question = @answer.question
+
+    if current_user.author?(@answer.question)
+      @answer.accept!
+    else
+      redirect_to question_path(@question), notice: 'You are not authorized for this.'
     end
   end
 

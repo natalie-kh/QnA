@@ -192,4 +192,63 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #accept' do
+    let!(:answer) { create(:answer, question: question, user: user) }
+
+    context 'for question author' do
+      before { login(author) }
+
+      it 'accepts answer' do
+        patch :accept,
+              params: { id: answer, format: :js }
+        answer.reload
+
+        expect(answer).to be_accepted
+      end
+
+      it 'renders accept view' do
+        patch :accept,
+              params: { id: answer, format: :js }
+
+        expect(response).to render_template :accept
+      end
+    end
+
+    context 'for not question author' do
+      before { login(user) }
+
+      it 'does not accept answer' do
+        patch :accept,
+              params: { id: answer, format: :js }
+        answer.reload
+
+        expect(answer).not_to be_accepted
+      end
+
+      it 'renders update view' do
+        patch :accept,
+              params: {id: answer, format: :js }
+
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+
+    context 'for unauthorized user' do
+      it 'does not accept answer' do
+        patch :accept,
+              params: { id: answer, format: :js }
+        answer.reload
+
+        expect(answer).not_to be_accepted
+      end
+
+      it 'returns 401: Unauthorized' do
+        patch :accept,
+              params: { id: answer, format: :js }
+
+        expect(response.status).to eq 401
+      end
+    end
+  end
 end
