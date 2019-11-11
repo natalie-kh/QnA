@@ -29,7 +29,7 @@ class AnswersController < ApplicationController
   def accept
     @question = @answer.question
 
-    if current_user.author?(@answer.question)
+    if current_user.author?(@question)
       @answer.accept!
     else
       redirect_to question_path(@question), notice: 'You are not authorized for this.'
