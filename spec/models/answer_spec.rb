@@ -22,7 +22,7 @@ RSpec.describe Answer, type: :model do
     end
   end
 
-  context 'method accept!' do
+  context '#accept!' do
 
     before { answer.accept! }
 

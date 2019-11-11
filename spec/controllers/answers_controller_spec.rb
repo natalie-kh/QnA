@@ -145,10 +145,12 @@ RSpec.describe AnswersController, type: :controller do
       before { login(author) }
 
       it 'does not change answer attributes' do
-        expect do
-          patch :update,
-                params: { id: answer, answer: attributes_for(:answer, :invalid), format: :js }
-        end.to_not change(answer, :body)
+        patch :update,
+              params: { id: answer, answer: attributes_for(:answer, :invalid), format: :js }
+
+        answer.reload
+
+        expect(answer.body).to eq 'Answer body'
       end
 
       it 'renders update view' do
@@ -161,10 +163,11 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'for unauthorized user' do
       it 'does not update answer' do
-        expect do
-          patch :update,
-                params: { id: answer, answer: { body: 'New Body'}, format: :js }
-        end.to_not change(answer, :body)
+        patch :update,
+              params: { id: answer, answer: { body: 'New Body'}, format: :js }
+        answer.reload
+
+        expect(answer.body).to eq 'Answer body'
       end
 
       it 'returns 401: Unauthorized' do
@@ -179,16 +182,18 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
 
       it 'does not update answer' do
-        expect do
-          patch :update,
-                params: { id: answer, answer: { body: 'New Body'}, format: :js }
-        end.to_not change(answer, :body)
-      end
-
-      it 're-render question' do
         patch :update,
               params: { id: answer, answer: { body: 'New Body'}, format: :js }
-        expect(response).to redirect_to question_path(question)
+        answer.reload
+
+        expect(answer.body).to eq 'Answer body'
+      end
+
+      it 'renders update view' do
+        patch :update,
+              params: { id: answer, answer: { body: 'New Body'}, format: :js }
+
+        expect(response).to render_template :update
       end
     end
   end

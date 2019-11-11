@@ -25,11 +25,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if current_user&.author?(@question)
-      @question.update(question_params)
-    else
-      redirect_to question_path(@question), notice: 'You are not authorized for this.'
-    end
+    @question.update(question_params) if current_user&.author?(@question)
   end
 
   def destroy

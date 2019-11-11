@@ -3,17 +3,15 @@ class Answer < ApplicationRecord
   belongs_to :user
 
   validates :body, presence: true
-  validates_uniqueness_of :question_id, if: :validate_uniqueness_of_accepted_answer
+  validates :accepted, uniqueness: { scope: :question_id, accepted: true }, if: :accepted?
 
-  default_scope { order(accepted: :desc) }
+  default_scope { order(accepted: :desc).order(:created_at) }
 
   def accept!
-    question.answers.update_all(accepted: false)
+    transaction do
+      question.answers.update_all(accepted: false)
 
-    self.update!(accepted: true)
-  end
-
-  def validate_uniqueness_of_accepted_answer
-    accepted? && question.answers.find_by(accepted: true)
+      self.update!(accepted: true)
+    end
   end
 end
