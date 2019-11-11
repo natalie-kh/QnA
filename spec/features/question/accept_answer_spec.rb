@@ -59,15 +59,28 @@ feature 'Question owner can accept answer', "
     expect(page).to have_no_link 'Accept answer'
   end
 
-  scenario 'Accepted answer renders first in list' do
+  scenario 'Accepted answer renders first in list', js: true do
    answer_list
    accepted_answer
+   sign_in(author)
    visit question_path(question)
 
-    within '.answers' do
-      answers = page.all(:css, '.card .card')
-      expect(answers.first.find_css(".answer-#{accepted_answer.id}")).not_to be_empty
-      expect(answers.first.find_css(".answer-#{answer_list.first.id}")).to be_empty
-    end
+   within '.answers' do
+     answers = page.all(:css, '.card .card')
+
+     expect(answers.first.native.attribute('class')).to eq "card answer-#{accepted_answer.id}"
+   end
+
+   within ".card.answer-#{answer_list.second.id}" do
+     click_on 'Accept answer'
+   end
+
+   expect(page).to (have_content 'Answer successfully accepted.', wait: 5)
+
+   within '.answers' do
+     answers = page.all(:css, '.card')
+
+     expect(answers.first.native.attribute('class')).to eq "card answer-#{answer_list.second.id}"
+   end
   end
 end
