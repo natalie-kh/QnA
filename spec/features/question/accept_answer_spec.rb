@@ -59,28 +59,34 @@ feature 'Question owner can accept answer', "
     expect(page).to have_no_link 'Accept answer'
   end
 
-  scenario 'Accepted answer renders first in list', js: true do
-   answer_list
-   accepted_answer
-   sign_in(author)
-   visit question_path(question)
+  describe 'Question author', js: true do
 
-   within '.answers' do
-     answers = page.all(:css, '.card .card')
+    given!(:accepted_answer) { create(:answer, question: question, user: user, accepted: true) }
+    given!(:answer_list) { create_list(:answer, 2, question: question, user: user) }
 
-     expect(answers.first.native.attribute('class')).to eq "card answer-#{accepted_answer.id}"
-   end
+    background do
+      sign_in(author)
+      visit question_path(question)
+    end
 
-   within ".card.answer-#{answer_list.second.id}" do
-     click_on 'Accept answer'
-   end
+    scenario 'accepts answer and sees it first in list', js: true do
+      within '.answers' do
+        answers = page.all(:css, '.card .card')
 
-   expect(page).to (have_content 'Answer successfully accepted.', wait: 5)
+        expect(answers.first.native.attribute('class')).to eq "card answer-#{accepted_answer.id}"
+      end
 
-   within '.answers' do
-     answers = page.all(:css, '.card')
+      within ".card.answer-#{answer_list.second.id}" do
+        click_on 'Accept answer'
+      end
 
-     expect(answers.first.native.attribute('class')).to eq "card answer-#{answer_list.second.id}"
-   end
+      expect(page).to (have_content 'Answer successfully accepted.', wait: 5)
+
+      within '.answers' do
+        answers = page.all(:css, '.card')
+
+        expect(answers.first.native.attribute('class')).to eq "card answer-#{answer_list.second.id}"
+      end
+    end
   end
 end

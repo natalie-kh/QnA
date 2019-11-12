@@ -1,7 +1,7 @@
 div.card class= "answer-#{answer.id}"
   div.card-body
     p.card-text= answer.body
-    -if current_user&.author?(answer) && answer.persisted?
+    -if current_user&.author?(answer)
       = link_to 'Delete', answer_path(answer), method: :delete, remote: true
       span |
       = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
