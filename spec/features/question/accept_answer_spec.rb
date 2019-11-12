@@ -88,5 +88,21 @@ feature 'Question owner can accept answer', "
         expect(answers.first.native.attribute('class')).to eq "card answer-#{answer_list.second.id}"
       end
     end
+
+    scenario 'sees non-accepted answers sorted by creating date', js: true do
+      within ".card.answer-#{answer_list.second.id}" do
+        click_on 'Accept answer'
+      end
+
+      expect(page).to (have_content 'Answer successfully accepted.', wait: 5)
+
+      within '.answers' do
+        answers = page.all(:css, '.card')
+
+        expect(answers.first.native.attribute('class')).to eq "card answer-#{answer_list.second.id}"
+        expect(answers[1].native.attribute('class')).to eq "card answer-#{accepted_answer.id}"
+        expect(answers.last.native.attribute('class')).to eq "card answer-#{answer_list.first.id}"
+      end
+    end
   end
 end
