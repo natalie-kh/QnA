@@ -36,4 +36,14 @@ RSpec.describe Answer, type: :model do
       expect(accepted_answer).not_to be_accepted
     end
   end
+
+  context '.default_scope' do
+    let!(:answers) { create_list(:answer, 2, question: question, user: author) }
+    before { answers.second.accept! }
+
+    it 'should sort array by accepted and created_at date' do
+      expect(question.answers.to_a).to be_eql [answers.second, accepted_answer, answer, answers.first ]
+    end
+
+  end
 end
