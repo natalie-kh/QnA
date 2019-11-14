@@ -1,5 +1,5 @@
-= form_with model: [ @question, @answer ], local: true do |f|
-  = f.text_area :body, placeholder: 'Your answer', rows: 7, cols: 60
+= form_with model: [ @question, @answer ] do |f|
+  = f.text_area :body, placeholder: 'Your answer', rows: 2, cols: 60
   br
   = f.submit 'Answer the Question'
   br

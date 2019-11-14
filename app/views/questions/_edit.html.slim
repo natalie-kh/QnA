@@ -1,0 +1,9 @@
+= form_with model: @question, class: 'hidden', html: {id: "edit-question-#{@question.id}"}  do |f|
+  = f.label :title
+  = f.text_field :title, placeholder: 'Edit Question Title'
+  br
+  = f.label :body
+  = f.text_area :body, placeholder: 'Edit Question Body', rows: 2, cols: 60
+  br
+  = f.submit 'Save'
+  br

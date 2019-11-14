@@ -1,0 +1,9 @@
+var answerId = '<%= @answer.id%>';
+$('.answer-errors').html('<%= render 'shared/errors', resource: @answer%>');
+
+<% if !@answer.errors.present? %>
+$('.answer-' + answerId + ' p.card-text').text('<%= @answer.body %>');
+$('form#edit-answer-' + answerId).addClass('hidden');
+$('.edit-answer-link').show()
+$('.container').prepend('<div class="alert alert-info">Your answer successfully updated.</div>');
+<% end %>

@@ -1,26 +1,33 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: %i[create]
-  before_action :load_answer, only: %i[destroy]
+  before_action :load_answer, only: %i[destroy update accept]
 
   def create
-    @answer = Answer.new(answer_params)
-    @answer.question = @question
-    @answer.user = current_user
+    @answer = @question.answers.create(answer_params.merge(user: current_user))
+  end
 
-    if @answer.save
-      redirect_to @question, notice: 'Your answer successfully created.'
-    else
-      render 'questions/show'
-    end
+  def update
+    @question = @answer.question
+
+    @answer.update(answer_params) if current_user.author?(@answer)
   end
 
   def destroy
     if current_user.author?(@answer)
       @answer.destroy
-      redirect_to question_path(@answer.question), notice: 'Your answer successfully deleted.'
     else
       redirect_to question_path(@answer.question), notice: 'You are not authorized for this.'
+    end
+  end
+
+  def accept
+    @question = @answer.question
+
+    if current_user.author?(@question)
+      @answer.accept!
+    else
+      redirect_to question_path(@question), notice: 'You are not authorized for this.'
     end
   end
 

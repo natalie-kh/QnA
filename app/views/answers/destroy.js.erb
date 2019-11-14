@@ -1,0 +1,4 @@
+var answerId = '<%= @answer.id %>';
+
+$('.answers .card').remove('.card.answer-' + answerId);
+$('.container').prepend('<div class="alert alert-info">Your answer successfully deleted.</div>');

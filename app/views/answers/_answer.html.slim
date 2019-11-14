@@ -1,5 +1,18 @@
-div.card
+div.card class= "answer-#{answer.id}"
   div.card-body
     p.card-text= answer.body
     -if current_user&.author?(answer)
-      = link_to 'Delete Answer', answer_path(answer), method: :delete
+      = link_to 'Delete', answer_path(answer), method: :delete, remote: true
+      span |
+      = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+    -if current_user&.author?(answer.question) && !answer.accepted?
+      span |
+      = link_to 'Accept answer', accept_answer_path(answer), method: :patch, remote: true
+
+
+= form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }  do |f|
+  = f.label :body
+  = f.text_area :body, placeholder: 'Edit answer', rows: 2, cols: 60
+  br
+  = f.submit 'Save'
+  br

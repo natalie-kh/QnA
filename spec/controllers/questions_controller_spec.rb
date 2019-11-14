@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question, user: user) }
+  let(:question) { create(:question, user: author) }
   let(:user) { create(:user) }
   let(:author) { create(:user) }
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 3, user: user) }
+    let(:questions) { create_list(:question, 3, user: author) }
 
     before { get :index }
 
@@ -41,19 +41,6 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'renders new views' do
       expect(response).to render_template :new
-    end
-  end
-
-  describe 'GET #edit' do
-    before { login(user) }
-    before { get :edit, params: { id: question } }
-
-    it 'assigns the requested question to @question' do
-      expect(assigns(:question)).to eq question
-    end
-
-    it 'renders edit views' do
-      expect(response).to render_template :edit
     end
   end
 
@@ -94,6 +81,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'does not save the question' do
         expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
       end
+
       it 'redirects to sign_in form' do
         post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to redirect_to new_user_session_path
@@ -102,29 +90,32 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before { login(user) }
 
     context 'with valid attributes' do
+      before { login(author) }
+
       it 'assigns the requested question to @question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
+        patch :update, params: { id: question, question: attributes_for(:question), format: :js }
         expect(assigns(:question)).to eq question
       end
+
       it 'changes question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
         question.reload
 
         expect(question.title).to eq 'new title'
         expect(question.body).to eq 'new body'
       end
 
-      it 'redirects to updated question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
-        expect(response).to redirect_to question
+      it 'renders update view' do
+        patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+        expect(response).to render_template :update
       end
     end
 
     context 'with invalid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
+      before { login(author) }
+      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid), format: :js } }
 
       it 'does not save changes' do
         question.reload
@@ -133,8 +124,39 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq 'MyText'
       end
 
-      it 're-renders edit view' do
-        expect(response).to render_template :edit
+      it 'renders update view' do
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'for unauthorized user' do
+      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid), format: :js } }
+
+      it 'does not update question' do
+        question.reload
+
+        expect(question.title).to eq 'MyString'
+        expect(question.body).to eq 'MyText'
+      end
+
+      it 'returns 401: Unauthorized' do
+        expect(response.status).to eq 401
+      end
+    end
+
+    context 'for not question author' do
+      before { login(user) }
+      before { patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js } }
+
+      it 'does not update question' do
+        question.reload
+
+        expect(question.title).to eq 'MyString'
+        expect(question.body).to eq 'MyText'
+      end
+
+      it 're-render question' do
+        expect(response).to redirect_to question_path(question)
       end
     end
   end
