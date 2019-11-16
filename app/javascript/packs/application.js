@@ -15,7 +15,9 @@ require("channels")
 
 require("packs/answers")
 require("packs/questions")
+require("packs/direct_uploads")
 
+//= require activestorage
 //= require_tree .
 
 
