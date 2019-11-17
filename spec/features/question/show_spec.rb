@@ -17,7 +17,6 @@ feature 'User can show question and answers to it', "
     expect(page).to have_content question.title
     expect(page).to have_content question.body
     expect(page).to have_content('Answer body', count: 3)
-
   end
 
   scenario 'Unauthenticated user shows question and answers', js: true do
