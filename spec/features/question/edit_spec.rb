@@ -76,4 +76,37 @@ feature 'User can edit his question', "
       end
     end
   end
+
+  describe 'Question author' do
+    background do
+      question.files.attach(create_file_blob)
+      sign_in author
+      visit question_path(question)
+    end
+
+    scenario 'deletes attached file', js: true do
+      within '.question' do
+        expect(page).to have_link 'image.jpg'
+        expect(page).to have_link 'x'
+        click_on 'x'
+
+        expect(page).to_not have_link 'image.jpg'
+      end
+    end
+  end
+
+  describe 'Not question author' do
+    background do
+      question.files.attach(create_file_blob)
+      sign_in user
+      visit question_path(question)
+    end
+
+    scenario 'tries to delete attached file', js: true do
+      within '.question' do
+        expect(page).to have_link 'image.jpg'
+        expect(page).to have_no_link 'x'
+      end
+    end
+  end
 end

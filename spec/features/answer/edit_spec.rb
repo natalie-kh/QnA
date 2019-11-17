@@ -14,7 +14,6 @@ feature 'User can edit his answer', "
   scenario 'Unauthenticated user can not to edit answer' do
     visit question_path(question)
 
-
     within '.answers' do
       expect(page).to_not have_link 'Edit'
     end
@@ -72,6 +71,39 @@ feature 'User can edit his answer', "
 
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+  end
+
+  describe 'Answer author' do
+    background do
+      answer.files.attach(create_file_blob)
+      sign_in author
+      visit question_path(question)
+    end
+
+    scenario 'deletes attached file', js: true do
+      within '.answers' do
+        expect(page).to have_link 'image.jpg'
+        expect(page).to have_link 'x'
+        click_on 'x'
+
+        expect(page).to_not have_link 'image.jpg'
+      end
+    end
+  end
+
+  describe 'Not Answer author' do
+    background do
+      answer.files.attach(create_file_blob)
+      sign_in user
+      visit question_path(question)
+    end
+
+    scenario 'tries to delete attached file', js: true do
+      within '.answers' do
+        expect(page).to have_link 'image.jpg'
+        expect(page).to have_no_link 'x'
       end
     end
   end
