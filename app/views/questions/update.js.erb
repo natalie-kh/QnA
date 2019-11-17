@@ -4,6 +4,7 @@ $('.question-errors').html('<%= render 'shared/errors', resource: @question%>');
 <% if @question.errors.blank? %>
 $('.question h1').text('<%= @question.title %>');
 $('.question p').text('<%= @question.body %>');
+$('.question div.files').html('<%= render 'shared/files', resource: @question%>');
 $('form#edit-question-' + questionId).addClass('hidden');
 $('.edit-question-link').show()
 $('.container').prepend('<div class="alert alert-info">Your question successfully updated.</div>');

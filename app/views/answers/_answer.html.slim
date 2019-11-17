@@ -1,9 +1,8 @@
 div.card class= "answer-#{answer.id}"
   div.card-body
     p.card-text= answer.body
-    -if answer.files.attached?
-      -answer.files.each do |file|
-        p= link_to file.filename.to_s, url_for(file)
+    div.files
+      =render 'shared/files', resource: answer
     -if current_user&.author?(answer)
       = link_to 'Delete', answer_path(answer), method: :delete, remote: true
       span |
@@ -16,6 +15,10 @@ div.card class= "answer-#{answer.id}"
 = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }  do |f|
   = f.label :body
   = f.text_area :body, placeholder: 'Edit answer', rows: 2, cols: 60
+  br
+  = f.label :files
+  br
+  = f.file_field :files, multiple: true, direct_upload: true
   br
   = f.submit 'Save'
   br
