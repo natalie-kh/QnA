@@ -5,5 +5,8 @@
   = f.label :body
   = f.text_area :body, placeholder: 'Edit Question Body', rows: 2, cols: 60
   br
+  = f.label :files
+  = f.file_field :files, multiple: true, direct_upload: true
+  br
   = f.submit 'Save'
   br

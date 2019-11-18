@@ -1,0 +1,4 @@
+var fileId = '<%= @attachment.id %>';
+
+$('.file-' + fileId).remove();
+$('.container').prepend('<div class="alert alert-info">Your attachment successfully deleted.</div>');
