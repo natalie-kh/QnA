@@ -8,21 +8,57 @@ feature 'User can add links to answer', "
   given(:author) { create(:user) }
   given!(:question) { create(:question, user: author) }
   given(:gist_url) { 'https://gist.github.com/natalya-bogdanova/ffc5802c87fe1efe0d04ff5d838d2bd6' }
+  given(:google_url) { 'https://www.google.com' }
 
-  scenario 'User adds link when give an answer', js: true do
-    sign_in(author)
+  describe 'Authenticated user' do
+    background do
+      sign_in(author)
+      visit question_path(question)
 
-    visit question_path(question)
+      fill_in 'answer_body', with: 'Answer Body'
+      fill_in 'Link name', with: 'My gist'
+    end
 
-    fill_in 'answer_body', with: 'Answer Body'
+    scenario 'adds link when give an answer', js: true do
+      fill_in 'Url', with: gist_url
 
-    fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: gist_url
+      click_on 'Answer the Question'
 
-    click_on 'Answer the Question'
+      within '.answers' do
+        expect(page).to have_link 'My gist', href: gist_url
+      end
+    end
 
-    within '.answers' do
-      expect(page).to have_link 'My gist', href: gist_url
+    scenario 'adds links when give an answer', js: true do
+      fill_in 'Url', with: gist_url
+
+      click_on 'add link'
+
+      within all('.nested-fields')[1] do
+        fill_in 'Link name', with: 'Google'
+        fill_in 'Url', with: google_url
+      end
+
+      click_on 'Answer the Question'
+
+      within '.answers' do
+        expect(page).to have_link 'My gist', href: gist_url
+        expect(page).to have_link 'Google', href: google_url
+      end
+    end
+
+    scenario 'adds link with error', js: true do
+      click_on 'Answer the Question'
+
+      expect(page).to have_content "Links url can't be blank"
+    end
+
+    scenario 'removes link form', js: true do
+      expect(page).to have_css('.nested-fields')
+
+      click_on 'remove link'
+
+      expect(page).to have_no_css('.nested-fields')
     end
   end
 end

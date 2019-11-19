@@ -4,3 +4,13 @@
   color: red;
   margin-left: 10px;
 }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.container {
+  min-height: 70%;
+  margin-bottom: 30px;
+}
