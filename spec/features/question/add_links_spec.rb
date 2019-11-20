@@ -56,5 +56,12 @@ feature 'User can add links to question', "
 
       expect(page).to have_no_css('.nested-fields')
     end
+
+    scenario 'adds link with wrong url' do
+      fill_in 'Url', with: 'google_url'
+      click_on 'Ask Question'
+
+      expect(page).to have_content 'Links url is invalid'
+    end
   end
 end

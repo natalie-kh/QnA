@@ -4,10 +4,7 @@ div.card class= "answer-#{answer.id}"
     div.files
       =render 'shared/files', resource: answer
     div.links
-      p Links:
-      ul
-        - answer.links.each do |link|
-          li= link_to link.name, link.url
+      =render 'shared/links', resource: answer
     -if current_user&.author?(answer)
       = link_to 'Delete', answer_path(answer), method: :delete, remote: true
       span |

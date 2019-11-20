@@ -60,5 +60,12 @@ feature 'User can add links to answer', "
 
       expect(page).to have_no_css('.nested-fields')
     end
+
+    scenario 'adds link with wrong url', js: true do
+      fill_in 'Url', with: 'google_url'
+      click_on 'Answer the Question'
+
+      expect(page).to have_content 'Links url is invalid'
+    end
   end
 end

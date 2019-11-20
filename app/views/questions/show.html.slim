@@ -9,10 +9,7 @@
       div.files
         = render 'shared/files', resource: @question
       div.links
-        p Links:
-        ul
-          -@question.links.each do |link|
-            li= link_to link.name, link.url
+        =render 'shared/links', resource: @question
       -if current_user&.author?(@question)
         = link_to 'Delete', question_path(@question), method: :delete
         span |
