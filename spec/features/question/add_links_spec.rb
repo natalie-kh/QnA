@@ -6,7 +6,9 @@ feature 'User can add links to question', "
   I'd like to be able to add links
 " do
   given(:author) { create(:user) }
-  given(:gist_url) { 'https://gist.github.com/natalya-bogdanova/ffc5802c87fe1efe0d04ff5d838d2bd6' }
+  given(:github_url) { 'https://github.com/natalya-bogdanova' }
+  given(:gist_url) { 'https://gist.github.com/natalya-bogdanova/59312d83a6e67827186ee969dbd18ef8' }
+  given(:wrong_gist_url) { 'https://gist.github.com/natalya-bogdanova/59312d8' }
   given(:google_url) { 'https://www.google.com' }
 
   describe 'Authenticated user' do
@@ -19,18 +21,38 @@ feature 'User can add links to question', "
       fill_in 'Body', with: 'Question Body'
 
       click_on 'add link'
-      fill_in 'Link name', with: 'My gist'
+      fill_in 'Link name', with: 'My github'
     end
 
     scenario 'adds link when asks question', js: true do
+      fill_in 'Url', with: github_url
+      click_on 'Ask Question'
+
+      expect(page).to have_link 'My github', href: github_url
+    end
+
+    scenario 'adds gist when asks question', js: true do
       fill_in 'Url', with: gist_url
       click_on 'Ask Question'
 
-      expect(page).to have_link 'My gist', href: gist_url
+      within '.question' do
+        expect(page).to have_no_link 'My github'
+        expect(page).to have_content "Hello\n\nI'm a gist"
+      end
+    end
+
+    scenario 'adds wrong gist when asks question', js: true do
+      fill_in 'Url', with: wrong_gist_url
+      click_on 'Ask Question'
+
+      within '.question' do
+        expect(page).to have_no_link 'My github'
+        expect(page).to have_content 'Gist not Found'
+      end
     end
 
     scenario 'adds links when asks question', js: true do
-      fill_in 'Url', with: gist_url
+      fill_in 'Url', with: github_url
       click_on 'add link'
 
       within all('.nested-fields')[1] do
@@ -40,7 +62,7 @@ feature 'User can add links to question', "
 
       click_on 'Ask Question'
 
-      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_link 'My github', href: github_url
       expect(page).to have_link 'Google', href: google_url
     end
 
@@ -81,12 +103,12 @@ feature 'User can add links to question', "
         click_on 'Edit'
         click_on 'add link'
 
-        fill_in 'Link name', with: 'My gist'
-        fill_in 'Url', with: gist_url
+        fill_in 'Link name', with: 'My github'
+        fill_in 'Url', with: github_url
         click_on 'Save'
       end
 
-      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_link 'My github', href: github_url
     end
   end
 end

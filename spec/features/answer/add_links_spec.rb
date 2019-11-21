@@ -7,7 +7,7 @@ feature 'User can add links to answer', "
 " do
   given(:author) { create(:user) }
   given!(:question) { create(:question, user: author) }
-  given(:gist_url) { 'https://gist.github.com/natalya-bogdanova/ffc5802c87fe1efe0d04ff5d838d2bd6' }
+  given(:github_url) { 'https://github.com/natalya-bogdanova' }
   given(:google_url) { 'https://www.google.com' }
 
   describe 'Authenticated user' do
@@ -17,21 +17,21 @@ feature 'User can add links to answer', "
 
       click_on 'add link'
       fill_in 'answer_body', with: 'Answer Body'
-      fill_in 'Link name', with: 'My gist'
+      fill_in 'Link name', with: 'My github'
     end
 
     scenario 'adds link when give an answer', js: true do
-      fill_in 'Url', with: gist_url
+      fill_in 'Url', with: github_url
 
       click_on 'Answer the Question'
 
       within '.answers' do
-        expect(page).to have_link 'My gist', href: gist_url
+        expect(page).to have_link 'My github', href: github_url
       end
     end
 
     scenario 'adds links when give an answer', js: true do
-      fill_in 'Url', with: gist_url
+      fill_in 'Url', with: github_url
 
       click_on 'add link'
 
@@ -43,7 +43,7 @@ feature 'User can add links to answer', "
       click_on 'Answer the Question'
 
       within '.answers' do
-        expect(page).to have_link 'My gist', href: gist_url
+        expect(page).to have_link 'My github', href: github_url
         expect(page).to have_link 'Google', href: google_url
       end
     end
