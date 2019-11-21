@@ -10,6 +10,7 @@ feature 'User can edit his answer', "
   given(:author) { create(:user) }
   given!(:question) { create(:question, user: author) }
   given!(:answer) { create(:answer, question: question, user: author) }
+  given(:google_url) { 'https://www.google.com' }
 
   scenario 'Unauthenticated user can not to edit answer' do
     visit question_path(question)
@@ -72,9 +73,27 @@ feature 'User can edit his answer', "
         expect(page).to have_link 'spec_helper.rb'
       end
     end
+
+    scenario 'adds link with answer editing', js: true do
+      sign_in author
+      visit question_path(question)
+
+      within '.answers' do
+        click_on 'Edit'
+        click_on 'add link'
+
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: google_url
+        click_on 'Save'
+
+        expect(page).to have_link 'My gist', href: google_url
+      end
+    end
   end
 
   describe 'Answer author' do
+    given!(:link) { create(:link, linkable: answer) }
+
     background do
       answer.files.attach(create_file_blob)
       sign_in author
@@ -89,6 +108,19 @@ feature 'User can edit his answer', "
 
         expect(page).to_not have_link 'image.jpg'
       end
+    end
+
+    scenario 'deletes attached link', js: true do
+      within '.answers' do
+        click_on 'Edit'
+        expect(page).to have_link link.name
+        expect(page).to have_link 'remove link'
+        click_on 'remove link'
+        click_on 'Save'
+      end
+
+      visit question_path(question)
+      expect(page).to_not have_link 'link.name'
     end
   end
 

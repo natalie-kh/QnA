@@ -19,8 +19,9 @@ div.card class= "answer-#{answer.id}"
   = f.text_area :body, placeholder: 'Edit answer', rows: 2, cols: 60
   br
   = f.label :files
-  br
   = f.file_field :files, multiple: true, direct_upload: true
   br
+  p Links:
+  = render 'shared/link_form', f: f
   = f.submit 'Save'
   br

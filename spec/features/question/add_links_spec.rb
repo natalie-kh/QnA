@@ -18,10 +18,11 @@ feature 'User can add links to question', "
       fill_in 'Title', with: 'Question Title'
       fill_in 'Body', with: 'Question Body'
 
+      click_on 'add link'
       fill_in 'Link name', with: 'My gist'
     end
 
-    scenario 'adds link when asks question' do
+    scenario 'adds link when asks question', js: true do
       fill_in 'Url', with: gist_url
       click_on 'Ask Question'
 
@@ -43,7 +44,7 @@ feature 'User can add links to question', "
       expect(page).to have_link 'Google', href: google_url
     end
 
-    scenario 'adds link with error' do
+    scenario 'adds link with error', js: true do
       click_on 'Ask Question'
 
       expect(page).to have_content "Links url can't be blank"
@@ -57,11 +58,35 @@ feature 'User can add links to question', "
       expect(page).to have_no_css('.nested-fields')
     end
 
-    scenario 'adds link with wrong url' do
+    scenario 'adds link with wrong url', js: true do
       fill_in 'Url', with: 'google_url'
       click_on 'Ask Question'
 
       expect(page).to have_content 'Links url is invalid'
+    end
+  end
+
+  describe 'Question Author' do
+    given!(:question) { create(:question, user: author) }
+
+    background do
+      sign_in(author)
+
+      visit question_path(question)
+    end
+
+    scenario 'adds link when edit question', js: true do
+
+      within '.question' do
+        click_on 'Edit'
+        click_on 'add link'
+
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: gist_url
+        click_on 'Save'
+      end
+
+      expect(page).to have_link 'My gist', href: gist_url
     end
   end
 end
