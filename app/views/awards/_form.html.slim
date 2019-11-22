@@ -1,0 +1,4 @@
+= f.fields_for :award do |award|
+    p
+    = award.text_field :name, placeholder: 'Award name'
+    = award.file_field :image, direct_upload: true, placeholder: 'Award image'
