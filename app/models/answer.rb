@@ -17,6 +17,7 @@ class Answer < ApplicationRecord
       question.answers.update_all(accepted: false)
 
       self.update!(accepted: true)
+      question.award&.update!(user: user)
     end
   end
 end

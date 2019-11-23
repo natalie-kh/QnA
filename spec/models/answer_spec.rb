@@ -15,6 +15,7 @@ RSpec.describe Answer, type: :model do
   end
 
   let(:author) { create(:user) }
+  let(:answer_author1) { create(:user) }
   let(:question) { create(:question, user: author) }
   let!(:accepted_answer) { create(:answer, question: question, user: author, accepted: true) }
   let(:accepted_answer2) { create(:answer, question: question, user: author, accepted: true) }
@@ -31,6 +32,8 @@ RSpec.describe Answer, type: :model do
   end
 
   context '#accept!' do
+    let!(:award) { create(:award, question: question) }
+    let!(:answer1) { create(:answer, question: question, user: answer_author1) }
 
     before { answer.accept! }
 
@@ -42,6 +45,18 @@ RSpec.describe Answer, type: :model do
       accepted_answer.reload
 
       expect(accepted_answer).not_to be_accepted
+    end
+
+    it 'rewards answer author' do
+      expect(author.awards.to_a).to include award
+
+      answer1.accept!
+
+      author.reload
+      answer_author1.reload
+
+      expect(author.awards.to_a).not_to include award
+      expect(answer_author1.awards.to_a).to include award
     end
   end
 

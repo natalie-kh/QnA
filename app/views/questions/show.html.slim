@@ -6,8 +6,9 @@
       h1= @question.title
     div.card-body
       p= @question.body
-      div.award
-        = render @question.award
+      -if @question.award
+        div.award
+          = render 'awards/award'
       div.files
         = render 'shared/files', resource: @question
       div.links

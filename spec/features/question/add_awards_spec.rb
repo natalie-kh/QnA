@@ -29,4 +29,29 @@ feature 'User can add award to question', "
       expect(page).to have_link 'Best answer award'
     end
   end
+
+  describe 'Question author' do
+    given(:author) { create(:user) }
+    given(:user) { create(:user) }
+    given!(:question) { create(:question, user: author) }
+    given!(:award) { create(:award, question: question) }
+    given!(:answer1) { create(:answer, question: question, user: user) }
+
+    scenario 'rewards accepted answer author', js: true do
+      sign_in(author)
+      visit question_path(question)
+
+      within ".card.answer-#{answer1.id}" do
+        click_on 'Accept answer'
+      end
+
+      log_out
+
+      sign_in(user)
+      visit my_awards_path(user)
+
+      expect(page).to have_content award.name
+      expect(page).to have_content award.question.title
+    end
+  end
 end
