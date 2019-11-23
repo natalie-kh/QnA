@@ -121,6 +121,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #update' do
     let!(:answer) { create(:answer, question: question, user: author) }
+    let!(:link) { create(:link, linkable: answer) }
 
     context 'with valid attributes' do
       before { login(author) }
@@ -131,6 +132,20 @@ RSpec.describe AnswersController, type: :controller do
         answer.reload
 
         expect(answer.body).to eq 'New Body'
+      end
+
+      it 'deletes answer link' do
+        expect(answer.links).not_to be_empty
+
+        patch :update,
+              params: { id: answer, answer: { links_attributes:
+                                                  {'0': { name: link.name,
+                                                          url: link.url,
+                                                          _destroy: 1, id: link.id}}},
+                        format: :js }
+        answer.reload
+
+        expect(answer.links).to be_empty
       end
 
       it 'renders update view' do

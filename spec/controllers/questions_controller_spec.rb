@@ -92,6 +92,8 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
 
     context 'with valid attributes' do
+      let!(:link) { create(:link, linkable: question) }
+
       before { login(author) }
 
       it 'assigns the requested question to @question' do
@@ -110,6 +112,20 @@ RSpec.describe QuestionsController, type: :controller do
       it 'renders update view' do
         patch :update, params: { id: question, question: attributes_for(:question), format: :js }
         expect(response).to render_template :update
+      end
+
+      it 'deletes question link' do
+        expect(question.links).not_to be_empty
+
+        patch :update,
+              params: { id: question, question: { links_attributes:
+                                                  {'0': { name: link.name,
+                                                          url: link.url,
+                                                          _destroy: 1, id: link.id}}},
+                        format: :js }
+        question.reload
+
+        expect(question.links).to be_empty
       end
     end
 
