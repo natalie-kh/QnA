@@ -9,6 +9,7 @@
     "bootstrap": "4.3.1",
     "cocoon": "github:nathanvda/cocoon",
     "cocoon-js": "^0.0.5",
+    "gist-async": "^2.0.2",
     "jquery": "^3.4.1",
     "popper.js": "^1.16.0",
     "turbolinks": "^5.2.0"

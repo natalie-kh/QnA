@@ -3,6 +3,6 @@ ul
   - resource.links.each do |link|
     li
       -if link.gist?
-        pre= link.gist_content
+        code gist= -("#{link.url}" + '.json') Loading gist
       -else
         = link_to link.name, link.url

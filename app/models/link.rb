@@ -7,8 +7,4 @@ class Link < ApplicationRecord
   def gist?
     url.match?(/^https:\/\/gist\.github\.com\/.*\/.*/)
   end
-
-  def gist_content
-    GistService.new(url).call
-  end
 end

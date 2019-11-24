@@ -37,7 +37,7 @@ feature 'User can add links to question', "
 
       within '.question' do
         expect(page).to have_no_link 'My github'
-        expect(page).to have_content "Hello\n\nI'm a gist"
+        expect(page).to have_content "Hello\nI'm a gist"
       end
     end
 
@@ -47,7 +47,7 @@ feature 'User can add links to question', "
 
       within '.question' do
         expect(page).to have_no_link 'My github'
-        expect(page).to have_content 'Gist not found'
+        expect(page).to have_content 'Loading gist'
       end
     end
 

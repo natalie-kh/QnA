@@ -26,14 +26,4 @@ RSpec.describe Link, type: :model do
       expect(Link.new(url: not_gist_url)).not_to be_gist
     end
   end
-
-  context '#gist_content' do
-    it 'returns content for gist' do
-      expect(gist.gist_content).to include "I'm a gist"
-    end
-
-    it 'returns Not a gist for wrong_gist_url' do
-      expect(not_found_gist.gist_content).to include 'Gist not found'
-    end
-  end
 end
