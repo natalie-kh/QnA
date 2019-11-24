@@ -5,13 +5,10 @@ RSpec.describe MyAwardsController, type: :controller do
   let(:author) { create(:user) }
   let(:question) { create(:question, user: author) }
   let(:question2) { create(:question, user: author) }
-  let(:award) { create(:award, question: question) }
-  let(:award2) { create(:award, question: question2) }
+  let(:award) { create(:award, question: question, user: user) }
+  let(:award2) { create(:award, question: question2, user: user) }
   let(:answer) { create(:answer, question: question, user: user) }
   let(:answer2) { create(:answer, question: question2, user: user) }
-  let!(:accept_answer) { answer.accept! }
-  let!(:accept_answer2) { answer2.accept! }
-
 
   describe 'GET #index' do
     context 'Authenticated user' do
