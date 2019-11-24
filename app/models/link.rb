@@ -9,9 +9,6 @@ class Link < ApplicationRecord
   end
 
   def gist_content
-    if gist?
-      array = GistService.new(url).call
-      array&.map { |array| array[0].upcase + "\n" + array[1]}&.join("\n\n") || 'Gist not Found'
-    end
+    GistService.new(url).call
   end
 end

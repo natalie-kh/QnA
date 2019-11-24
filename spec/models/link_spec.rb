@@ -33,11 +33,7 @@ RSpec.describe Link, type: :model do
     end
 
     it 'returns Not a gist for wrong_gist_url' do
-      expect(not_found_gist.gist_content).to include 'Gist not Found'
-    end
-
-    it 'returns nil for nor gist' do
-      expect(not_gist.gist_content).to be_nil
+      expect(not_found_gist.gist_content).to include 'Gist not found'
     end
   end
 end

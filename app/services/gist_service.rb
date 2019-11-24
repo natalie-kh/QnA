@@ -8,9 +8,10 @@ class GistService
   def call
     begin
       @responce = @client.gist(@gist_hash)
-      files_content_array
+      files_content
 
-    rescue Octokit::NotFound, 'Gist not found'
+    rescue Octokit::NotFound
+      'Gist not found'
     end
   end
 
@@ -20,7 +21,8 @@ class GistService
 
   private
 
-  def files_content_array
-    @responce&.files&.to_h.values.map { |file,_| ["#{file[:filename]}", file[:content]] }
+  def files_content
+    array = @responce&.files&.to_h.values.map { |file,_| "#{file[:filename].upcase}" + "\n" + file[:content] }
+    array&.join("\n\n")
   end
 end

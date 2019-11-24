@@ -47,7 +47,7 @@ feature 'User can add links to question', "
 
       within '.question' do
         expect(page).to have_no_link 'My github'
-        expect(page).to have_content 'Gist not Found'
+        expect(page).to have_content 'Gist not found'
       end
     end
 
