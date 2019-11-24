@@ -19,7 +19,6 @@ feature 'User can create answers for a question', "
       fill_in 'answer_body', with: 'Answer Body'
       click_on 'Answer the Question'
 
-
       expect(page).to have_content 'Your answer successfully created.'
       expect(page).to have_content 'Answer Body'
     end
@@ -32,7 +31,7 @@ feature 'User can create answers for a question', "
 
     scenario 'creates answer with attached files', js: true do
       fill_in 'answer_body', with: 'Answer Body'
-      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb" ]
+      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
 
       click_on 'Answer the Question'
 

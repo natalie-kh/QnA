@@ -6,16 +6,20 @@ RSpec.describe AnswersController, type: :controller do
   let!(:question) { create(:question, user: author) }
 
   describe 'POST #create' do
-
     context 'with valid attributes' do
       before { login(user) }
 
       it 'saves a new answer in db' do
         expect do
           post :create,
-               params: { answer: attributes_for(:answer),
-                         question_id: question, format: :js }
+               params: { answer: { body: 'Body',
+                                   links_attributes: {
+                                     '0' => { name: 'Link',
+                                              url: 'https://google.com/' }
+                                   } }, question_id: question, format: :js }
         end.to change(Answer, :count).by(1)
+
+        expect(Answer.last.links).not_to be_empty
       end
 
       it 'redirects to show question view' do
@@ -128,10 +132,15 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'changes answer attributes' do
         patch :update,
-              params: { id: answer, answer: { body: 'New Body'}, format: :js }
+              params: { id: answer, answer: { body: 'New Body',
+                                              links_attributes: {
+                                                '0' => { name: 'Edited Link Name',
+                                                         url: 'https://google.com/' }
+                                              } }, format: :js }
         answer.reload
 
         expect(answer.body).to eq 'New Body'
+        expect(answer.links.last.name).to eq 'Edited Link Name'
       end
 
       it 'deletes answer link' do
@@ -139,9 +148,9 @@ RSpec.describe AnswersController, type: :controller do
 
         patch :update,
               params: { id: answer, answer: { links_attributes:
-                                                  {'0': { name: link.name,
-                                                          url: link.url,
-                                                          _destroy: 1, id: link.id}}},
+                                                  { '0': { name: link.name,
+                                                           url: link.url,
+                                                           _destroy: 1, id: link.id } } },
                         format: :js }
         answer.reload
 
@@ -150,7 +159,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'renders update view' do
         patch :update,
-              params: { id: answer, answer: { body: 'New Body'}, format: :js }
+              params: { id: answer, answer: { body: 'New Body' }, format: :js }
 
         expect(response).to render_template :update
       end
@@ -170,7 +179,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'renders update view' do
         patch :update,
-              params: {id: answer, answer: attributes_for(:answer, :invalid), format: :js }
+              params: { id: answer, answer: attributes_for(:answer, :invalid), format: :js }
 
         expect(response).to render_template :update
       end
@@ -179,7 +188,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'for unauthorized user' do
       it 'does not update answer' do
         patch :update,
-              params: { id: answer, answer: { body: 'New Body'}, format: :js }
+              params: { id: answer, answer: { body: 'New Body' }, format: :js }
         answer.reload
 
         expect(answer.body).to eq 'Answer body'
@@ -187,7 +196,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'returns 401: Unauthorized' do
         patch :update,
-              params: { id: answer, answer: { body: 'New Body'}, format: :js }
+              params: { id: answer, answer: { body: 'New Body' }, format: :js }
 
         expect(response.status).to eq 401
       end
@@ -198,7 +207,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'does not update answer' do
         patch :update,
-              params: { id: answer, answer: { body: 'New Body'}, format: :js }
+              params: { id: answer, answer: { body: 'New Body' }, format: :js }
         answer.reload
 
         expect(answer.body).to eq 'Answer body'
@@ -206,7 +215,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'renders update view' do
         patch :update,
-              params: { id: answer, answer: { body: 'New Body'}, format: :js }
+              params: { id: answer, answer: { body: 'New Body' }, format: :js }
 
         expect(response).to render_template :update
       end
@@ -248,7 +257,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'renders update view' do
         patch :accept,
-              params: {id: answer, format: :js }
+              params: { id: answer, format: :js }
 
         expect(response).to redirect_to question_path(question)
       end

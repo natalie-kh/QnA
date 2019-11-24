@@ -32,8 +32,8 @@ gem 'slim-rails'
 
 # UI
 gem 'bootstrap', '~> 4.3.0'
-gem 'jquery-rails'
 gem 'cocoon'
+gem 'jquery-rails'
 
 # Storage
 gem 'aws-sdk-s3', require: false
@@ -44,9 +44,9 @@ gem 'octokit', '~> 4.0'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'rspec-rails', '~> 4.0.0.beta3'
-  gem 'dotenv-rails'
 end
 
 group :development do

@@ -45,12 +45,35 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-
     context 'with valid attributes' do
       before { login(user) }
 
-      it 'saves a new question in db' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
+      it 'saves a new question with link in db' do
+        expect do
+          post :create, params: {
+            question: {
+              title: 'Title', body: 'Body',
+              links_attributes: { '0' => { name: 'Link',
+                                           url: 'https://google.com/' } }
+            }
+          }
+        end.to change(Question, :count).by(1)
+
+        expect(Question.last.links).not_to be_empty
+      end
+
+      it 'saves a new question with award in db' do
+        expect do
+          post :create, params: {
+            question: {
+              title: 'Title', body: 'Body',
+              award_attributes: { name: 'New Award',
+                                  image: Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/image.jpg'), 'image/jpeg') }
+            }
+          }
+        end.to change(Question, :count).by(1)
+
+        expect(Question.last.award.name).to eq 'New Award'
       end
 
       it 'redirects to show view' do
@@ -77,7 +100,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'for unauthorized user' do
-
       it 'does not save the question' do
         expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
       end
@@ -90,7 +112,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-
     context 'with valid attributes' do
       let!(:link) { create(:link, linkable: question) }
 
@@ -102,11 +123,17 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'changes question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
+        patch :update, params: { id: question,
+                                 question: { title: 'new title', body: 'new body',
+                                             links_attributes: {
+                                               '0' => { name: 'Edited Link Name',
+                                                        url: 'https://google.com/' }
+                                             } }, format: :js }
         question.reload
 
         expect(question.title).to eq 'new title'
         expect(question.body).to eq 'new body'
+        expect(question.links.last.name).to eq 'Edited Link Name'
       end
 
       it 'renders update view' do
@@ -119,9 +146,9 @@ RSpec.describe QuestionsController, type: :controller do
 
         patch :update,
               params: { id: question, question: { links_attributes:
-                                                  {'0': { name: link.name,
-                                                          url: link.url,
-                                                          _destroy: 1, id: link.id}}},
+                                                  { '0': { name: link.name,
+                                                           url: link.url,
+                                                           _destroy: 1, id: link.id } } },
                         format: :js }
         question.reload
 
@@ -209,7 +236,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'for unauthorized user' do
-
       it "doesn't delete the question" do
         expect { delete :destroy, params: { id: question } }.not_to change(Question, :count)
       end

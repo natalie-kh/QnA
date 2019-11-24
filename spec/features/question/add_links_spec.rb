@@ -98,7 +98,6 @@ feature 'User can add links to question', "
     end
 
     scenario 'adds link when edit question', js: true do
-
       within '.question' do
         click_on 'Edit'
         click_on 'add link'

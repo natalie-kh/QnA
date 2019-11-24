@@ -11,7 +11,7 @@ RSpec.describe User, type: :model do
   let(:author) { create(:user) }
   let(:user) { create(:user) }
   let(:question) { create(:question, user: author) }
-  let(:answer) { create(:answer,question: question, user: author) }
+  let(:answer) { create(:answer, question: question, user: author) }
 
   context 'is the author for his question and answer' do
     subject { author }

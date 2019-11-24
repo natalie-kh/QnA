@@ -42,6 +42,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy])
+    params.require(:answer).permit(:body, files: [], links_attributes: %i[id name url _destroy])
   end
 end

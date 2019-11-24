@@ -13,7 +13,6 @@ feature 'User can show question list', "
     visit questions_path
 
     expect(page).to have_content('MyString', count: 3)
-
   end
   scenario 'Unauthenticated user shows question list' do
     visit questions_path

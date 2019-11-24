@@ -7,7 +7,6 @@ RSpec.describe AttachmentsController, type: :controller do
   let!(:attachment) { question.files.attach(create_file_blob) }
 
   describe 'DELETE #destroy' do
-
     context 'Author' do
       before { login(author) }
 
@@ -43,7 +42,6 @@ RSpec.describe AttachmentsController, type: :controller do
     end
 
     context 'Not Authorized user' do
-
       it 'tries to delete attached file form a question' do
         expect do
           delete :destroy,

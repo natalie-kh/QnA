@@ -16,7 +16,6 @@ RSpec.describe Link, type: :model do
   let(:not_found_gist) { Link.new(url: not_found_gist_url) }
   let(:not_gist) { Link.new(url: not_gist_url) }
 
-
   context '#gist?' do
     it 'returns true for gist url' do
       expect(Link.new(url: gist_url)).to be_gist

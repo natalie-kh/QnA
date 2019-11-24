@@ -65,8 +65,7 @@ RSpec.describe Answer, type: :model do
     before { answers.second.accept! }
 
     it 'should sort array by accepted and created_at date' do
-      expect(question.answers.to_a).to be_eql [answers.second, accepted_answer, answer, answers.first ]
+      expect(question.answers.to_a).to be_eql [answers.second, accepted_answer, answer, answers.first]
     end
-
   end
 end

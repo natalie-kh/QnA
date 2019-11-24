@@ -5,7 +5,6 @@ feature 'User can edit his answer', "
   As an author of answer
   I'd like to be able to edit my answer
 " do
-
   given(:user) { create(:user) }
   given(:author) { create(:user) }
   given!(:question) { create(:question, user: author) }
@@ -66,7 +65,7 @@ feature 'User can edit his answer', "
 
       within '.answers' do
         click_on 'Edit'
-        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb" ]
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
         click_on 'Save'
 
         expect(page).to have_link 'rails_helper.rb'

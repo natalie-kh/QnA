@@ -36,7 +36,6 @@ class QuestionsController < ApplicationController
     else
       redirect_to question_path(@question), notice: 'You are not authorized for this.'
     end
-
   end
 
   private
@@ -47,7 +46,7 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, files: [],
-                                     links_attributes: [:id, :name, :url , :_destroy],
-                                     award_attributes: [:name, :image])
+                                                    links_attributes: %i[id name url _destroy],
+                                                    award_attributes: %i[name image])
   end
 end

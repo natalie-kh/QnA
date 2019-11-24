@@ -7,7 +7,7 @@ feature 'Question owner can destroy the question', "
 " do
   given(:author) { create(:user) }
   given(:user) { create(:user) }
-  given!(:question) { create(:question, user: author)}
+  given!(:question) { create(:question, user: author) }
 
   describe 'Authenticated user' do
     scenario 'deletes his question' do
