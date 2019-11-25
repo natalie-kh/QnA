@@ -11,10 +11,6 @@ RSpec.describe Link, type: :model do
 
   let(:gist_url) { 'https://gist.github.com/natalya-bogdanova/59312d83a6e67827186ee969dbd18ef8' }
   let(:not_gist_url) { 'https://github.com/natalya-bogdanova/' }
-  let(:not_found_gist_url) { 'https://gist.github.com/natalya-bogdanova/59312d83a6e67827' }
-  let(:gist) { Link.new(url: gist_url) }
-  let(:not_found_gist) { Link.new(url: not_found_gist_url) }
-  let(:not_gist) { Link.new(url: not_gist_url) }
 
   context '#gist?' do
     it 'returns true for gist url' do
