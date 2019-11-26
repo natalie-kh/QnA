@@ -1,0 +1,17 @@
+h1 My Awards
+
+-if @my_awards.present?
+  table class="table"
+    thead
+      tr
+        th scope="col"
+        th scope="col" Name
+        th scope="col" Question
+    tbody
+      -@my_awards.each do |award|
+        tr
+          td.align-middle = image_tag(award.image, :size => "200x150", :class => "thumbnail")
+          td.align-middle = award.name
+          td.align-middle = award.question.title
+-else
+  p No awards yet

@@ -5,7 +5,6 @@ feature 'User can edit his question', "
   As an author of question
   I'd like to be able to edit my question
 " do
-
   given(:user) { create(:user) }
   given(:author) { create(:user) }
   given!(:question) { create(:question, user: author) }
@@ -58,9 +57,8 @@ feature 'User can edit his question', "
 
       within '.question' do
         click_on 'Edit'
-        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb" ]
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
         click_on 'Save'
-
 
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
@@ -78,6 +76,8 @@ feature 'User can edit his question', "
   end
 
   describe 'Question author' do
+    given!(:link) { create(:link, linkable: question) }
+
     background do
       question.files.attach(create_file_blob)
       sign_in author
@@ -92,6 +92,19 @@ feature 'User can edit his question', "
 
         expect(page).to_not have_link 'image.jpg'
       end
+    end
+
+    scenario 'deletes attached link', js: true do
+      within '.question' do
+        click_on 'Edit'
+        expect(page).to have_link link.name
+        expect(page).to have_link 'remove link'
+        click_on 'remove link'
+        click_on 'Save'
+      end
+
+      visit question_path(question)
+      expect(page).to_not have_link 'link.name'
     end
   end
 

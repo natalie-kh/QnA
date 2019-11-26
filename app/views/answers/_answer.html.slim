@@ -3,6 +3,8 @@ div.card class= "answer-#{answer.id}"
     p.card-text= answer.body
     div.files
       =render 'shared/files', resource: answer
+    div.links
+      =render 'shared/links', resource: answer
     -if current_user&.author?(answer)
       = link_to 'Delete', answer_path(answer), method: :delete, remote: true
       span |
@@ -17,8 +19,9 @@ div.card class= "answer-#{answer.id}"
   = f.text_area :body, placeholder: 'Edit answer', rows: 2, cols: 60
   br
   = f.label :files
-  br
   = f.file_field :files, multiple: true, direct_upload: true
   br
+  p Links:
+  = render 'shared/link_form', f: f
   = f.submit 'Save'
   br

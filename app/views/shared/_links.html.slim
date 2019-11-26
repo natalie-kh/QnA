@@ -1,0 +1,8 @@
+p Links:
+ul
+  - resource.links.each do |link|
+    li
+      - if link.gist?
+        code gist="#{link.url}.json" Loading gist
+      - else
+        = link_to link.name, link.url

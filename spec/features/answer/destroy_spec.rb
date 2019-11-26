@@ -8,7 +8,7 @@ feature 'Answer author can destroy the answer', "
   given(:author) { create(:user) }
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: author) }
-  given!(:answer) { create(:answer, question: question, user: author)}
+  given!(:answer) { create(:answer, question: question, user: author) }
 
   describe 'Authenticated user' do
     scenario 'deletes his answer', js: true do

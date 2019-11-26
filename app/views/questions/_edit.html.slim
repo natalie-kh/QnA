@@ -8,5 +8,7 @@
   = f.label :files
   = f.file_field :files, multiple: true, direct_upload: true
   br
+  p Links:
+  = render 'shared/link_form', f: f
   = f.submit 'Save'
   br

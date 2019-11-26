@@ -1,8 +1,13 @@
-= form_with model: [ @question, @answer ] do |f|
-  = f.text_area :body, placeholder: 'Your answer', rows: 2, cols: 60
-  br
-  =f.label :files
-  br
-  = f.file_field :files, multiple: true, direct_upload: true
-  = f.submit 'Answer the Question'
-  br
+div.card
+  div.card-body
+    = form_with model: [ @question, @answer ] do |f|
+      = f.text_area :body, placeholder: 'Your answer', rows: 2, cols: 60
+      br
+      =f.label :files
+      = f.file_field :files, multiple: true, direct_upload: true
+      br
+      p Links:
+      = render 'shared/link_form', f: f
+
+      = f.submit 'Answer the Question'
+      br

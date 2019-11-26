@@ -6,8 +6,13 @@
       h1= @question.title
     div.card-body
       p= @question.body
+      -if @question.award
+        div.award
+          = render 'awards/award'
       div.files
         = render 'shared/files', resource: @question
+      div.links
+        =render 'shared/links', resource: @question
       -if current_user&.author?(@question)
         = link_to 'Delete', question_path(@question), method: :delete
         span |

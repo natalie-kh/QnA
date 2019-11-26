@@ -1,4 +1,6 @@
 class Answer < ApplicationRecord
+  include Linkable
+
   belongs_to :question
   belongs_to :user
 
@@ -13,7 +15,8 @@ class Answer < ApplicationRecord
     transaction do
       question.answers.update_all(accepted: false)
 
-      self.update!(accepted: true)
+      update!(accepted: true)
+      question.award&.update!(user: user)
     end
   end
 end

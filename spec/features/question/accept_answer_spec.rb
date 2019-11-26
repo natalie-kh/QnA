@@ -60,7 +60,6 @@ feature 'Question owner can accept answer', "
   end
 
   describe 'Question author', js: true do
-
     given!(:accepted_answer) { create(:answer, question: question, user: user, accepted: true) }
     given!(:answer_list) { create_list(:answer, 2, question: question, user: user) }
 
