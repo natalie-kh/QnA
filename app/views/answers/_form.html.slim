@@ -1,6 +1,6 @@
 div.card
   div.card-body
-    = form_with model: [ @question, @answer ] do |f|
+    = form_with model: [ @question, @answer ], data: { type: :json } do |f|
       = f.text_area :body, placeholder: 'Your answer', rows: 2, cols: 60
       br
       =f.label :files
