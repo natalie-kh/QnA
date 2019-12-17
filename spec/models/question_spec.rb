@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Question, type: :model do
   include_examples 'link association'
+  include_examples 'vote association'
 
   it { should belong_to(:user) }
 
