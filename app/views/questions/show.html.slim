@@ -1,7 +1,7 @@
 .question-errors
 
 .question
-  div.card
+  div.card class="question-#{@question.id}"
     div.card-header
       h1= @question.title
     div.card-body
@@ -17,6 +17,9 @@
         = link_to 'Delete', question_path(@question), method: :delete
         span |
         = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: @question.id }
+      div.rating
+        =render 'shared/rating', resource: @question
+
 
   = render 'edit'
 
