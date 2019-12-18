@@ -10,40 +10,38 @@ shared_examples_for 'votable' do
     it { should have_many(:votes).dependent(:destroy) }
   end
 
-  describe '#vote_for!' do
-    it 'increases rating by 1' do
+  describe '#vote!' do
+    it 'increases rating by 1 with value = 1 ' do
       expect(votable.rating).to eq 0
 
-      votable.vote_for!(user)
+      votable.vote!(user, 1)
       expect(votable.rating).to eq 1
     end
 
     it 'increases rating by 1 one time' do
       expect(votable.rating).to eq 0
 
-      votable.vote_for!(user)
+      votable.vote!(user, 1)
       expect(votable.rating).to eq 1
 
-      votable.vote_for!(user)
+      votable.vote!(user, 1)
       expect(votable.rating).to eq 1
     end
-  end
 
-  describe '#vote_against!' do
-    it 'reduces rating by 1' do
+    it 'reduces rating by 1 with value = -1' do
       expect(votable.rating).to eq 0
 
-      votable.vote_against!(user)
+      votable.vote!(user, -1)
       expect(votable.rating).to eq -1
     end
 
     it 'reduces rating by 1 one time' do
       expect(votable.rating).to eq 0
 
-      votable.vote_against!(user)
+      votable.vote!(user, -1)
       expect(votable.rating).to eq -1
 
-      votable.vote_against!(user)
+      votable.vote!(user, -1)
       expect(votable.rating).to eq -1
     end
   end
@@ -52,8 +50,8 @@ shared_examples_for 'votable' do
     it 'returns 2 for 2 for-votes' do
       expect(votable.rating).to eq 0
 
-      votable.vote_for!(user)
-      votable.vote_for!(second_user)
+      votable.vote!(user, 1)
+      votable.vote!(second_user, 1)
 
       expect(votable.rating).to eq 2
     end
@@ -61,8 +59,8 @@ shared_examples_for 'votable' do
     it 'returns -2 for 2 against-votes' do
       expect(votable.rating).to eq 0
 
-      votable.vote_against!(user)
-      votable.vote_against!(second_user)
+      votable.vote!(user, -1)
+      votable.vote!(second_user, -1)
 
       expect(votable.rating).to eq -2
     end
@@ -70,9 +68,9 @@ shared_examples_for 'votable' do
     it 'returns 1 for 2 for-votes and 1 against-votes' do
       expect(votable.rating).to eq 0
 
-      votable.vote_for!(user)
-      votable.vote_for!(second_user)
-      votable.vote_against!(third_user)
+      votable.vote!(user, 1)
+      votable.vote!(second_user, 1)
+      votable.vote!(third_user, -1)
 
       expect(votable.rating).to eq 1
     end
