@@ -8,7 +8,7 @@ module Voted
   def vote
     return head :forbidden if current_user.author?(@voted)
 
-    @voted.vote!(current_user, votes_params['value'])
+    @voted.vote!(current_user, vote_value: votes_params['value'])
 
     render json: { votable_type: @voted.class.to_s,
                    votable_id: @voted.id,

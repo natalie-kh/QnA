@@ -5,8 +5,8 @@ RSpec.describe Vote, type: :model do
   it { should belong_to :votable }
 
   it { should validate_presence_of :value }
+  it { should validate_presence_of :user }
+  it { should validate_uniqueness_of(:user).scoped_to(%i[votable_id votable_type]) }
 
-  it { should allow_value(1).for(:value) }
-  it { should allow_value(-1).for(:value) }
-  it { should_not allow_value(0).for(:value) }
+  it { should validate_inclusion_of(:value).in_array(%w[-1 1]) }
 end
