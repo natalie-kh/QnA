@@ -3,6 +3,10 @@ require 'rails_helper'
 RSpec.describe Question, type: :model do
   include_examples 'link association'
 
+  it_behaves_like 'votable' do
+    let!(:votable) { create(:question, user: author) }
+  end
+
   it { should belong_to(:user) }
 
   it { should have_many(:answers).dependent(:destroy) }
