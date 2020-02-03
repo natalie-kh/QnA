@@ -1,9 +1,9 @@
-div.card
-  div.card-body
-    = form_with model: [ @question, @answer ] do |f|
+= form_with model: [ @question, @answer ], class: 'hidden', html: {id: "new-answer-form"} do |f|
+  div.card
+    div.card-body
       = f.text_area :body, placeholder: 'Your answer', rows: 2, cols: 60
       br
-      =f.label :files
+      = f.label :files
       = f.file_field :files, multiple: true, direct_upload: true
       br
       p Links:

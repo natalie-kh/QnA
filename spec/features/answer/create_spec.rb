@@ -13,6 +13,7 @@ feature 'User can create answers for a question', "
       sign_in(user)
 
       visit question_path(question)
+      click_on 'Add New Answer'
     end
 
     scenario 'answers the question', js: true do
@@ -44,5 +45,6 @@ feature 'User can create answers for a question', "
     visit question_path(question)
 
     expect(page).to have_no_button 'Answer the Question'
+    expect(page).to have_no_link 'Add New Answer'
   end
 end

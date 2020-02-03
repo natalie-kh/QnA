@@ -15,6 +15,7 @@ feature 'User can add links to answer', "
       sign_in(author)
       visit question_path(question)
 
+      click_on 'Add New Answer'
       click_on 'add link'
       fill_in 'answer_body', with: 'Answer Body'
       fill_in 'Link name', with: 'My github'

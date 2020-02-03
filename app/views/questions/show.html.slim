@@ -13,12 +13,12 @@
         = render 'shared/files', resource: @question
       div.links
         =render 'shared/links', resource: @question
+      div.rating
+        = render 'shared/rating', resource: @question
       -if current_user&.author?(@question)
         = link_to 'Delete', question_path(@question), method: :delete
         span |
         = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: @question.id }
-      div.rating
-        =render 'shared/rating', resource: @question
 
 
   = render 'edit'
@@ -28,13 +28,13 @@
     h2= 'All Answers'
     div.card
       = render @question.answers
-  -else
-    p No answers yet
 
 .answer-errors
   = render 'shared/errors', resource: @answer
 
 .new_answer
-  =render 'answers/form' if current_user
+  -if current_user
+    = link_to 'Add New Answer', '#', class: 'new-answer-link'
+    =render 'answers/form' if current_user
 
 
