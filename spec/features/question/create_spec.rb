@@ -50,16 +50,20 @@ feature 'User can create question', "
   end
 
   context 'multiple sessions', :cable do
-    scenario 'all users see new question in real-time', js: true do
+    background do
       Capybara.using_session('author') do
         sign_in(user)
         visit questions_path
+        expect(page).to have_no_content 'Test question'
       end
 
       Capybara.using_session('guest') do
         visit questions_path
+        expect(page).to have_no_content 'Test question'
       end
+    end
 
+    scenario 'all users see new question in real-time', js: true do
       Capybara.using_session('author') do
         click_on 'Ask Question'
 
@@ -79,15 +83,6 @@ feature 'User can create question', "
     end
 
     scenario 'Question with errors does not appear on another user page', js: true do
-      Capybara.using_session('author') do
-        sign_in(user)
-        visit questions_path
-      end
-
-      Capybara.using_session('guest') do
-        visit questions_path
-      end
-
       Capybara.using_session('author') do
         click_on 'Ask Question'
 

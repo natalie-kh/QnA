@@ -21,8 +21,7 @@ shared_examples_for 'voted' do
 
         expected = { votable_type: voted.class.to_s,
                      votable_id: voted.id,
-                     votes: voted.rating
-        }.to_json
+                     votes: voted.rating }.to_json
 
         expect(response) == expected
       end

@@ -52,7 +52,6 @@ feature 'User can vote for answer', "
     end
 
     scenario 'cannot vote' do
-
       within('.answers') do
         expect(page).to have_no_button('▲')
         expect(page).to have_no_button('▼')
@@ -71,4 +70,3 @@ feature 'User can vote for answer', "
     end
   end
 end
-
