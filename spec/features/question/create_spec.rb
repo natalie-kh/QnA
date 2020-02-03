@@ -48,4 +48,58 @@ feature 'User can create question', "
 
     expect(page).to have_no_link 'Ask Question'
   end
+
+  context 'multiple sessions', :cable do
+    scenario 'all users see new question in real-time', js: true do
+      Capybara.using_session('author') do
+        sign_in(user)
+        visit questions_path
+      end
+
+      Capybara.using_session('guest') do
+        visit questions_path
+      end
+
+      Capybara.using_session('author') do
+        click_on 'Ask Question'
+
+        fill_in 'Title', with: 'Test question'
+        fill_in 'Body', with: 'test text'
+        click_on 'Ask Question'
+
+        expect(page).to have_content 'Your question successfully created.'
+        expect(page).to have_content 'Test question'
+        expect(page).to have_content 'test text'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'Test question'
+        expect(page).to have_content 'test text'
+      end
+    end
+
+    scenario 'Question with errors does not appear on another user page', js: true do
+      Capybara.using_session('author') do
+        sign_in(user)
+        visit questions_path
+      end
+
+      Capybara.using_session('guest') do
+        visit questions_path
+      end
+
+      Capybara.using_session('author') do
+        click_on 'Ask Question'
+
+        fill_in 'Body', with: 'Test question'
+        click_on 'Ask Question'
+
+        expect(page).to have_content "Title can't be blank"
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_no_content 'Test question'
+      end
+    end
+  end
 end
