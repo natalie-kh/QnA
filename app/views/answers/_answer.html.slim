@@ -1,4 +1,4 @@
-div.answer
+div.answer class= "answer-#{answer.id}"
   div.card class= "answer-#{answer.id}"
     div.card-body
       .btn-group
@@ -22,6 +22,13 @@ div.answer
           .col-12
             = link_to 'Accept answer', accept_answer_path(answer), method: :patch, remote: true
 
+
+  .comments
+    = render 'comments/comments', resource: answer
+    -if current_user
+      = render 'comments/comment_form', resource: answer
+    br
+    br
 
   = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }  do |f|
     div[class='form-group row']

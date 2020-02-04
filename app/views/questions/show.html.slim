@@ -1,6 +1,6 @@
 .question-errors
 
-.question
+.question class="question-#{@question.id}"
   div.card class="question-#{@question.id}"
     div.card-header
       h1= @question.title
@@ -29,6 +29,15 @@
 
 
   = render 'edit'
+  .comments
+    = render 'comments/comments', resource: @question
+    -if current_user
+      = render 'comments/comment_form', resource: @question
+    br
+    br
+
+  .comment-errors
+    = render 'shared/errors', resource: @comment
 
 .answers
   -if @question.answers.present?
@@ -42,6 +51,6 @@ p
 .new_answer
   -if current_user
     = link_to 'Add New Answer', '#', class: 'new-answer-link'
-    =render 'answers/form' if current_user
+    = render 'answers/form' if current_user
 
 
