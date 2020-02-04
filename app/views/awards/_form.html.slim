@@ -1,4 +1,8 @@
 = f.fields_for :award do |award|
-    p
-    = award.text_field :name, placeholder: 'Award name'
-    = award.file_field :image, direct_upload: true, placeholder: 'Award image'
+    .row
+      .col
+        = award.text_field :name, placeholder: 'Award name', class: 'form-control'
+      .col
+        div[class='custom-file']
+          = award.file_field :image, direct_upload: true, class: 'custom-file-input', placeholder: 'Award Image'
+          = award.label :image,'Choose Award Image', class: 'custom-file-label'

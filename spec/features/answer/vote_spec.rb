@@ -17,10 +17,10 @@ feature 'User can vote for answer', "
 
     scenario 'votes for answer' do
       within('.answers') do
-        expect(page).to have_content 'Rating: 0'
+        expect(page).to have_css('.circle', text: '0')
         click_on '▲'
 
-        expect(page).to have_content 'Rating: 1'
+        expect(page).to have_css('.circle', text: '1')
       end
     end
 
@@ -28,19 +28,19 @@ feature 'User can vote for answer', "
       within('.answers') do
         click_on '▼'
 
-        expect(page).to have_content 'Rating: -1'
+        expect(page).to have_css('.circle', text: '-1')
       end
     end
 
     scenario 'votes only 1 time for answer' do
       within('.answers') do
-        expect(page).to have_content 'Rating: 0'
+        expect(page).to have_css('.circle', text: '0')
 
         click_on '▲'
-        expect(page).to have_content 'Rating: 1'
+        expect(page).to have_css('.circle', text: '1')
 
         click_on '▲'
-        expect(page).to have_content 'Rating: 1'
+        expect(page).to have_css('.circle', text: '1')
       end
     end
   end
@@ -64,8 +64,8 @@ feature 'User can vote for answer', "
       visit question_path(question)
 
       within('.answers') do
-        expect(page).to have_no_button('up')
-        expect(page).to have_no_button('down')
+        expect(page).to have_no_button('▲')
+        expect(page).to have_no_button('▼')
       end
     end
   end

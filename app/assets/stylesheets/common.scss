@@ -16,3 +16,14 @@ html, body {
   min-height: 70%;
   margin-bottom: 30px;
 }
+
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.99);
+  line-height: 40px;
+  text-align: center;
+  background: #f8f9fa !important;
+}

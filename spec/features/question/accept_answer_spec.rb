@@ -70,7 +70,7 @@ feature 'Question owner can accept answer', "
 
     scenario 'accepts answer and sees it first in list', js: true do
       within '.answers' do
-        answers = page.all(:css, '.card .card')
+        answers = page.all(:css, '.answer .card')
 
         expect(answers.first.native.attribute('class')).to eq "card answer-#{accepted_answer.id}"
       end
@@ -82,7 +82,7 @@ feature 'Question owner can accept answer', "
       expect(page).to (have_content 'Answer successfully accepted.', wait: 5)
 
       within '.answers' do
-        answers = page.all(:css, '.card')
+        answers = page.all(:css, '.answer .card')
 
         expect(answers.first.native.attribute('class')).to eq "card answer-#{answer_list.second.id}"
       end

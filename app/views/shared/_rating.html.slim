@@ -1,8 +1,8 @@
 .rating
   -if current_user && !current_user.author?(resource)
     = button_to '▲', polymorphic_url(resource, action: :vote,
-          voted: { value: 1 }), data: { type: :json }, remote: true
-  b= "Rating: #{resource.rating}"
+          voted: { value: 1 }), data: { type: :json }, class: 'btn text-success', color: :green, remote: true
+  .circle = resource.rating
   -if current_user && !current_user.author?(resource)
     = button_to '▼', polymorphic_url(resource, action: :vote,
-          voted: { value: -1 }), data: { type: :json }, remote: true
+          voted: { value: -1 }), data: { type: :json }, class: 'btn text-danger', remote: true

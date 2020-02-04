@@ -32,7 +32,10 @@ feature 'User can create answers for a question', "
 
     scenario 'creates answer with attached files', js: true do
       fill_in 'answer_body', with: 'Answer Body'
-      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+
+      within('.new_answer') do
+        attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"], make_visible: true
+      end
 
       click_on 'Answer the Question'
 

@@ -3,7 +3,7 @@ $('.question-errors').html('<%= render 'shared/errors', resource: @question%>');
 
 <% if @question.errors.blank? %>
 $('.question h1').text('<%= @question.title %>');
-$('.question .card-body > p').text('<%= @question.body %>');
+$('.question .card-body p.body').text('<%= @question.body %>');
 $('.question div.files').html('<%= render 'shared/files', resource: @question%>');
 $('.question div.links').html(`<%= render 'shared/links', resource: @question%>`);
 $('form#edit-question-' + questionId).addClass('hidden');

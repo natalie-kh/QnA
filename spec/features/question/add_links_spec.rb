@@ -25,14 +25,14 @@ feature 'User can add links to question', "
     end
 
     scenario 'adds link when asks question', js: true do
-      fill_in 'Url', with: github_url
+      fill_in 'Link Url', with: github_url
       click_on 'Ask Question'
 
       expect(page).to have_link 'My github', href: github_url
     end
 
     scenario 'adds gist when asks question', js: true do
-      fill_in 'Url', with: gist_url
+      fill_in 'Link Url', with: gist_url
       click_on 'Ask Question'
 
       within '.question' do
@@ -42,7 +42,7 @@ feature 'User can add links to question', "
     end
 
     scenario 'adds wrong gist when asks question', js: true do
-      fill_in 'Url', with: wrong_gist_url
+      fill_in 'Link Url', with: wrong_gist_url
       click_on 'Ask Question'
 
       within '.question' do
@@ -52,12 +52,12 @@ feature 'User can add links to question', "
     end
 
     scenario 'adds links when asks question', js: true do
-      fill_in 'Url', with: github_url
+      fill_in 'Link Url', with: github_url
       click_on 'add link'
 
       within all('.nested-fields')[1] do
         fill_in 'Link name', with: 'Google'
-        fill_in 'Url', with: google_url
+        fill_in 'Link Url', with: google_url
       end
 
       click_on 'Ask Question'
@@ -81,7 +81,7 @@ feature 'User can add links to question', "
     end
 
     scenario 'adds link with wrong url', js: true do
-      fill_in 'Url', with: 'google_url'
+      fill_in 'Link Url', with: 'google_url'
       click_on 'Ask Question'
 
       expect(page).to have_content 'Links url is invalid'
@@ -103,7 +103,7 @@ feature 'User can add links to question', "
         click_on 'add link'
 
         fill_in 'Link name', with: 'My github'
-        fill_in 'Url', with: github_url
+        fill_in 'Link Url', with: github_url
         click_on 'Save'
       end
 

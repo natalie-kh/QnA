@@ -20,7 +20,7 @@ feature 'User can add award to question', "
     scenario 'adds award when asks a question', js: true do
       within '.award' do
         fill_in 'Award name', with: 'Best answer award'
-        attach_file 'Award image', "#{Rails.root}/spec/fixtures/files/image.jpg"
+        attach_file 'Award Image', "#{Rails.root}/spec/fixtures/files/image.jpg", make_visible: true
       end
 
       click_on 'Ask Question'
