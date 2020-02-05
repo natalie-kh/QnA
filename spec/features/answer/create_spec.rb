@@ -7,6 +7,7 @@ feature 'User can create answers for a question', "
 " do
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
+  given!(:question2) { create(:question, user: user) }
 
   describe 'Authenticated user' do
     background do
@@ -49,5 +50,71 @@ feature 'User can create answers for a question', "
 
     expect(page).to have_no_button 'Answer the Question'
     expect(page).to have_no_link 'Add New Answer'
+  end
+
+  context 'multiple sessions', :cable do
+    background do
+      Capybara.using_session('author') do
+        sign_in(user)
+        visit question_path(question)
+        expect(page).to have_no_content 'Test Answer'
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+        expect(page).to have_no_content 'Test Answer'
+      end
+    end
+
+    scenario 'all users see new answers in real-time', js: true do
+      Capybara.using_session('author') do
+        click_on 'Add New Answer'
+
+        fill_in 'answer_body', with: 'Test Answer'
+        click_on 'Answer the Question'
+
+        expect(page).to have_content 'Your answer successfully created.'
+        expect(page).to have_content 'Test Answer', count: 1
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'Test Answer', count: 1
+      end
+    end
+
+    scenario 'Answers with errors does not appear on another user page', js: true do
+      Capybara.using_session('author') do
+        click_on 'Add New Answer'
+
+        click_on 'Answer the Question'
+
+        expect(page).to have_content "Body can't be blank"
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_no_content "Body can't be blank"
+      end
+    end
+
+    scenario 'New answer appears on necessary question page only', js: true do
+      Capybara.using_session('guest') do
+        visit question_path(question2)
+        expect(page).to have_no_content 'Test Answer'
+      end
+
+      Capybara.using_session('author') do
+        click_on 'Add New Answer'
+
+        fill_in 'answer_body', with: 'Test Answer'
+        click_on 'Answer the Question'
+
+        expect(page).to have_content 'Your answer successfully created.'
+        expect(page).to have_content 'Test Answer', count: 1
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_no_content 'Test Answer'
+      end
+    end
   end
 end
