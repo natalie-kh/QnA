@@ -1,3 +1,5 @@
+<% return if current_user.id != @comment.user_id  %>
+
 $('.comment-errors').html('<%= render 'shared/errors', resource: @comment%>');
 var commentableId = '<%=@commentable.id %>';
 var commentableClass = '<%=@commentable.class.name.underscore %>';

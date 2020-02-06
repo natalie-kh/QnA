@@ -5,8 +5,8 @@ $(document).on('turbolinks:load', function(){
         var answerId = $(this).data('answerId');
         $('form#edit-answer-' + answerId).removeClass('hidden');
     })
-    $('.new_answer').on('click', '.new-answer-link', function(c) {
-        c.preventDefault();
+    $('.new_answer').on('click', '.new-answer-link', function(e) {
+        e.preventDefault();
         $(this).hide();
         $('form#new-answer-form').removeClass('hidden');
     })

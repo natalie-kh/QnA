@@ -1,17 +1,17 @@
 = form_with model: [ @question, @answer ], class: 'hidden', html: {id: "new-answer-form"} do |f|
   div.card
     div.card-body
-      div[class='form-group row']
+      div.form-group.row
         = f.text_area :body, placeholder: 'Your answer', class: 'form-control'
 
-      div[class='form-group row']
-        div[class='custom-file']
+      div.form-group.row
+        div.custom-file
           = f.file_field :files, multiple: true, direct_upload: true, class: 'custom-file-input'
           = f.label :files, placeholder: 'Choose Files', class: 'custom-file-label'
 
-      div[class='form-group row']
+      div.form-group.row
         = render 'shared/link_form', f: f
 
-      div[class='form-group row']
-        div[class='col-sm-10']
+      div.form-group.row
+        div.col-sm-10
           = f.submit 'Answer the Question', class: 'btn btn-primary'
