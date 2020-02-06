@@ -8,7 +8,7 @@ module Votable
       votes.sum(:value)
     end
 
-    def vote!(user, vote_value: value )
+    def vote!(user, vote_value: value)
       transaction do
         votes.where(user_id: user.id).delete_all
         votes.create!(user: user, value: vote_value)

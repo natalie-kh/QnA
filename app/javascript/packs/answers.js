@@ -5,6 +5,11 @@ $(document).on('turbolinks:load', function(){
         var answerId = $(this).data('answerId');
         $('form#edit-answer-' + answerId).removeClass('hidden');
     })
+    $('.new_answer').on('click', '.new-answer-link', function(e) {
+        e.preventDefault();
+        $(this).hide();
+        $('form#new-answer-form').removeClass('hidden');
+    })
     $('.new_answer').on('ajax:success', function(e) {
         var answer = e.detail[0];
         $('.answers').append('<p>' + answer.body + '</p>');

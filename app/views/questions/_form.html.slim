@@ -2,22 +2,30 @@ p
   = render 'shared/errors', resource: @question
 
 = form_with model: @question, local: true do |f|
-  p
-    = f.label :title
-    = f.text_field :title
+  div.form-group.row
+    = f.label :title, class:'col-sm-2 col-form-label'
+    div.col-sm-10
+      = f.text_field :title, class: 'form-control'
 
-  p
-    = f.label :body
-    = f.text_area :body
+  div.form-group.row
+    = f.label :body, class:'col-sm-2 col-form-label'
+    div.col-sm-10
+      = f.text_area :body, class: 'form-control'
 
-  p
-    = f.label :files
-    = f.file_field :files, multiple: true, direct_upload: true
-
-  = render 'shared/link_form', f: f
+  .files
+    div.form-group.row
+      div.custom-file
+        = f.file_field :files, multiple: true, direct_upload: true, class: 'custom-file-input'
+        = f.label :files,'Choose Files', class: 'custom-file-label', placeholder: 'Choose Files'
 
   .award
-    = render 'awards/form', f: f
-  p
-  p
-    = f.submit 'Ask Question'
+    div.form-group.row
+        = render 'awards/form', f: f
+
+  .links
+    div.form-group.row
+     = render 'shared/link_form', f: f
+
+  div.form-group.row
+    div.col-sm-10
+      = f.submit 'Ask Question', class: 'btn btn-primary'

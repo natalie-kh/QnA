@@ -1,0 +1,12 @@
+<% return if current_user.id != @comment.user_id  %>
+
+$('.comment-errors').html('<%= render 'shared/errors', resource: @comment%>');
+var commentableId = '<%=@commentable.id %>';
+var commentableClass = '<%=@commentable.class.name.underscore %>';
+var commentCss = '.' + commentableClass + '-' + commentableId + ' .comments ul'
+
+<% if @comment.persisted? %>
+$(commentCss).append('<%= j render @comment %>');
+$('.new_comment #comment_body').val('');
+$('.container').prepend('<div class="alert alert-info">Your comment successfully created.</div>');
+<% end %>

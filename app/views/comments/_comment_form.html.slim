@@ -1,0 +1,4 @@
+= form_with model: [resource, Comment.new], html: {id: "new-comment-form"} do |f|
+  div[class='form-inline float-sm-right new_comment']
+    = f.text_field :body, placeholder: 'Your comment', class: 'form-control'
+    = f.submit 'Post the Comment', class: 'btn btn-primary'

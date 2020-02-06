@@ -1,0 +1,4 @@
+ul.list-group.list-group-flush
+  - if resource.comments.any?
+      - resource.comments.each do |comment|
+        li.list-group-item.text-right =comment.body

@@ -1,10 +1,8 @@
 h1 All Questions
 
--if @questions.present?
-      div.card
-        = render @questions
--else
-  p No questions yet
+div.card
+  div.questions
+    = render @questions
 
 -if current_user
   p= link_to 'Ask Question', new_question_path

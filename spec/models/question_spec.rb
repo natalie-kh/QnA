@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Question, type: :model do
   include_examples 'link association'
+  include_examples 'comment association'
 
   it_behaves_like 'votable' do
     let!(:votable) { create(:question, user: author) }

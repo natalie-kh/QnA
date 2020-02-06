@@ -1,40 +1,56 @@
 .question-errors
 
-.question
+.question class="question-#{@question.id}"
   div.card class="question-#{@question.id}"
     div.card-header
       h1= @question.title
     div.card-body
-      p= @question.body
-      -if @question.award
-        div.award
-          = render 'awards/award'
-      div.files
-        = render 'shared/files', resource: @question
-      div.links
-        =render 'shared/links', resource: @question
-      -if current_user&.author?(@question)
-        = link_to 'Delete', question_path(@question), method: :delete
-        span |
-        = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: @question.id }
-      div.rating
-        =render 'shared/rating', resource: @question
+      .btn-group
+        .w-30.p-2
+          div.rating
+            = render 'shared/rating', resource: @question
+        .w-70.p-2
+          p.body= @question.body
+          -if @question.award
+            div.award
+              = render 'awards/award'
+          div.files
+            = render 'shared/files', resource: @question
+          div.links
+            = render 'shared/links', resource: @question
+
+      p
+      .btn-group
+        -if current_user&.author?(@question)
+          .col
+            = link_to 'Delete', question_path(@question), method: :delete
+          .col
+            = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: @question.id }
 
 
   = render 'edit'
+  .comments
+    = render 'comments/comments', resource: @question
+    -if current_user
+      = render 'comments/comment_form', resource: @question
+    br
+    br
+
+  .comment-errors
+    = render 'shared/errors', resource: @comment
 
 .answers
   -if @question.answers.present?
     h2= 'All Answers'
-    div.card
-      = render @question.answers
-  -else
-    p No answers yet
+    = render @question.answers
 
 .answer-errors
   = render 'shared/errors', resource: @answer
 
+p
 .new_answer
-  =render 'answers/form' if current_user
+  -if current_user
+    = link_to 'Add New Answer', '#', class: 'new-answer-link'
+    = render 'answers/form' if current_user
 
 

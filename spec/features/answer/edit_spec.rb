@@ -65,7 +65,7 @@ feature 'User can edit his answer', "
 
       within '.answers' do
         click_on 'Edit'
-        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"], make_visible: true
         click_on 'Save'
 
         expect(page).to have_link 'rails_helper.rb'
@@ -82,7 +82,7 @@ feature 'User can edit his answer', "
         click_on 'add link'
 
         fill_in 'Link name', with: 'My gist'
-        fill_in 'Url', with: google_url
+        fill_in 'Link Url', with: google_url
         click_on 'Save'
 
         expect(page).to have_link 'My gist', href: google_url

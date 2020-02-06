@@ -4,9 +4,13 @@ Rails.application.routes.draw do
     member { post :vote }
   end
 
+  concern :commentable do
+    resources :comments, only: :create, shallow: true
+  end
+
   devise_for :users
-  resources :questions, except: [:edit], concerns: [:votable] do
-    resources :answers, shallow: true, only: [:create, :destroy, :update], concerns: [:votable] do
+  resources :questions, except: [:edit], concerns: [:votable, :commentable] do
+    resources :answers, shallow: true, only: [:create, :destroy, :update], concerns: [:votable, :commentable] do
       patch :accept, on: :member
     end
   end

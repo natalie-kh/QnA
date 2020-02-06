@@ -16,10 +16,10 @@ feature 'User can vote for question', "
 
     scenario 'votes for question' do
       within('.question') do
-        expect(page).to have_content 'Rating: 0'
+        expect(page).to have_css('.circle', text: '0')
         click_on '▲'
 
-        expect(page).to have_content 'Rating: 1'
+        expect(page).to have_css('.circle', text: '1')
       end
     end
 
@@ -27,19 +27,19 @@ feature 'User can vote for question', "
       within('.question') do
         click_on '▼'
 
-        expect(page).to have_content 'Rating: -1'
+        expect(page).to have_css('.circle', text: '-1')
       end
     end
 
     scenario 'votes only 1 time for question' do
       within('.question') do
-        expect(page).to have_content 'Rating: 0'
+        expect(page).to have_css('.circle', text: '0')
 
         click_on '▲'
-        expect(page).to have_content 'Rating: 1'
+        expect(page).to have_css('.circle', text: '1')
 
         click_on '▲'
-        expect(page).to have_content 'Rating: 1'
+        expect(page).to have_css('.circle', text: '1')
       end
     end
   end

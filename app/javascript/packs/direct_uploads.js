@@ -34,3 +34,15 @@ addEventListener("direct-upload:end", event => {
     const element = document.getElementById(`direct-upload-${id}`)
     element.classList.add("direct-upload--complete")
 })
+
+$(document).on('turbolinks:load', function(){
+    $("#question_files").change(function(){
+        $('.custom-file-label').text(this.files && this.files.length == 1 ? this.files[0].name : `${this.files.length} files selected`);
+    });
+});
+
+$(document).on('turbolinks:load', function(){
+    $("#answer_files").change(function(){
+        $('.custom-file-label').text(this.files && this.files.length == 1 ? this.files[0].name : `${this.files.length} files selected`);
+    });
+});

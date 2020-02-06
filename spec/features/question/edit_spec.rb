@@ -57,7 +57,7 @@ feature 'User can edit his question', "
 
       within '.question' do
         click_on 'Edit'
-        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"], make_visible: true
         click_on 'Save'
 
         expect(page).to have_link 'rails_helper.rb'
