@@ -8,7 +8,8 @@ Rails.application.routes.draw do
     resources :comments, only: :create, shallow: true
   end
 
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
+
   resources :questions, except: [:edit], concerns: [:votable, :commentable] do
     resources :answers, shallow: true, only: [:create, :destroy, :update], concerns: [:votable, :commentable] do
       patch :accept, on: :member

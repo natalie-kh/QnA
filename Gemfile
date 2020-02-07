@@ -29,6 +29,8 @@ gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'devise'
 gem 'gon'
+gem 'omniauth'
+gem 'omniauth-github'
 gem 'slim-rails'
 
 # UI
