@@ -30,6 +30,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'devise'
 gem 'gon'
 gem 'omniauth'
+gem 'omniauth-facebook'
 gem 'omniauth-github'
 gem 'slim-rails'
 
