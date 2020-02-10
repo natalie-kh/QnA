@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe MyAwardsController, type: :controller do
+RSpec.describe AwardsController, type: :controller do
   let(:user) { create(:user) }
   let(:author) { create(:user) }
   let(:question) { create(:question, user: author) }
@@ -18,7 +18,7 @@ RSpec.describe MyAwardsController, type: :controller do
       end
 
       it 'populates an array of all awards' do
-        expect(assigns(:my_awards)).to match_array(user.awards)
+        expect(assigns(:awards)).to match_array(user.awards)
       end
 
       it 'renders index view' do

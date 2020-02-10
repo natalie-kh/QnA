@@ -10,7 +10,7 @@ RSpec.describe AttachmentsController, type: :controller do
     context 'Author' do
       before { login(author) }
 
-      it 'deletes attached file form a question' do
+      it 'deletes attached file from a question' do
         expect do
           delete :destroy,
                  params: { id: question.files.first,
@@ -27,7 +27,7 @@ RSpec.describe AttachmentsController, type: :controller do
     context 'Not Author' do
       before { login(user) }
 
-      it 'deletes attached file form own question' do
+      it 'does not delete attached file from the question' do
         expect do
           delete :destroy,
                  params: { id: question.files.first,
@@ -35,9 +35,9 @@ RSpec.describe AttachmentsController, type: :controller do
         end.to_not change(question.files, :count)
       end
 
-      it 'renders destroy view' do
+      it 'returns 403: Forbidden' do
         delete :destroy, params: { id: question.files.first, format: :js }
-        expect(response).to render_template :destroy
+        expect(response.status).to eq 403
       end
     end
 

@@ -13,19 +13,19 @@ div.answer class= "answer-#{answer.id}"
             = render 'shared/links', resource: answer
       p
       .btn-group
-        -if current_user&.author?(answer)
+        -if can?(:update, answer)
           .col
             = link_to 'Delete', answer_path(answer), method: :delete, remote: true
           .col
             = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-        -if current_user&.author?(answer.question) && !answer.accepted?
+        -if can?(:accept, answer) && !answer.accepted?
           .col-12
             = link_to 'Accept answer', accept_answer_path(answer), method: :patch, remote: true
 
 
   .comments
     = render 'comments/comments', resource: answer
-    -if current_user
+    -if can?(:create, Comment)
       = render 'comments/comment_form', resource: answer
     br
     br

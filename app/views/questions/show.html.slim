@@ -21,7 +21,7 @@
 
       p
       .btn-group
-        -if current_user&.author?(@question)
+        -if can?(:update, @question)
           .col
             = link_to 'Delete', question_path(@question), method: :delete
           .col
@@ -31,7 +31,7 @@
   = render 'edit'
   .comments
     = render 'comments/comments', resource: @question
-    -if current_user
+    -if can?(:create, Comment)
       = render 'comments/comment_form', resource: @question
     br
     br
@@ -49,8 +49,8 @@
 
 p
 .new_answer
-  -if current_user
+  -if can?(:create, Answer)
     = link_to 'Add New Answer', '#', class: 'new-answer-link'
-    = render 'answers/form' if current_user
+    = render 'answers/form'
 
 

@@ -202,8 +202,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq 'MyText'
       end
 
-      it 're-render question' do
-        expect(response).to redirect_to question_path(question)
+      it 'returns 403: Forbidden' do
+        expect(response.status).to eq 403
       end
     end
   end
@@ -231,11 +231,6 @@ RSpec.describe QuestionsController, type: :controller do
 
       it "doesn't delete the question" do
         expect { delete :destroy, params: { id: question } }.not_to change(Question, :count)
-      end
-
-      it 're-render question' do
-        delete :destroy, params: { id: question }
-        expect(response).to redirect_to question_path(question)
       end
     end
 
