@@ -33,6 +33,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
 gem 'slim-rails'
+gem 'cancancan'
 
 # UI
 gem 'bootstrap', '~> 4.3.0'
