@@ -6,6 +6,8 @@ class AnswersController < ApplicationController
   before_action :load_answer, only: %i[destroy update accept]
   after_action :publish_answer, only: :create
 
+  authorize_resource
+
   def create
     @answer = @question.answers.create(answer_params.merge(user: current_user))
   end
@@ -13,25 +15,17 @@ class AnswersController < ApplicationController
   def update
     @question = @answer.question
 
-    @answer.update(answer_params) if current_user.author?(@answer)
+    @answer.update(answer_params)
   end
 
   def destroy
-    if current_user.author?(@answer)
-      @answer.destroy
-    else
-      redirect_to question_path(@answer.question), notice: 'You are not authorized for this.'
-    end
+    @answer.destroy
   end
 
   def accept
     @question = @answer.question
 
-    if current_user.author?(@question)
-      @answer.accept!
-    else
-      redirect_to question_path(@question), notice: 'You are not authorized for this.'
-    end
+    @answer.accept!
   end
 
   private

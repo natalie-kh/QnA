@@ -110,9 +110,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer }, format: :js }.not_to change(Answer, :count)
       end
 
-      it 'renders destroy view' do
+      it 'returns 403: Forbidden' do
         delete :destroy, params: { id: answer }, format: :js
-        expect(response).to redirect_to question_path(question)
+        expect(response.status).to eq 403
       end
     end
 
@@ -218,11 +218,11 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq 'Answer body'
       end
 
-      it 'renders update view' do
+      it 'returns 403: Forbidden' do
         patch :update,
               params: { id: answer, answer: { body: 'New Body' }, format: :js }
 
-        expect(response).to render_template :update
+        expect(response.status).to eq 403
       end
     end
   end
@@ -260,11 +260,11 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer).not_to be_accepted
       end
 
-      it 'renders update view' do
+      it 'returns 403: Forbidden' do
         patch :accept,
               params: { id: answer, format: :js }
 
-        expect(response).to redirect_to question_path(question)
+        expect(response.status).to eq 403
       end
     end
 

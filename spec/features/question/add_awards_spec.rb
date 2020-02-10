@@ -47,7 +47,7 @@ feature 'User can add award to question', "
       log_out
 
       sign_in(user)
-      visit my_awards_path(user)
+      visit awards_path(user)
 
       expect(page).to have_content award.name
       expect(page).to have_content award.question.title
