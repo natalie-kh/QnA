@@ -23,8 +23,10 @@ describe Ability, type: :model do
   describe '#user_ability' do
     let(:user) { create :user }
     let(:other) { create :user }
-    let(:question) { create :question, user_id: user.id }
-    let(:other_question) { create :question, user_id: other.id }
+    let(:question) { build :question, user_id: user.id }
+    let(:other_question) { build :question, user_id: other.id }
+    let(:answer) { build(:answer, question: question, user_id: user.id) }
+    let(:other_answer) { build(:answer, question: question, user_id: other.id) }
 
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, Award }
@@ -36,19 +38,19 @@ describe Ability, type: :model do
     end
 
     context 'PUT #update' do
-      it { should be_able_to :update, create(:question, user_id: user.id) }
-      it { should_not be_able_to :update, create(:question, user_id: other.id) }
+      it { should be_able_to :update, question }
+      it { should_not be_able_to :update, other_question }
 
-      it { should be_able_to :update, create(:answer, question_id: question.id, user_id: user.id) }
-      it { should_not be_able_to :update, create(:answer, question_id: question.id, user_id: other.id) }
+      it { should be_able_to :update, answer }
+      it { should_not be_able_to :update, other_answer }
     end
 
     context 'DELETE #destroy' do
-      it { should be_able_to :destroy, create(:question, user_id: user.id) }
-      it { should_not be_able_to :destroy, create(:question, user_id: other.id) }
+      it { should be_able_to :destroy, question }
+      it { should_not be_able_to :destroy, other_question  }
 
-      it { should be_able_to :destroy, create(:answer, question_id: question.id, user_id: user.id) }
-      it { should_not be_able_to :destroy, create(:answer, question_id: question.id, user_id: other.id) }
+      it { should be_able_to :destroy, answer }
+      it { should_not be_able_to :destroy, other_answer }
 
       context 'attachments' do
         let!(:attachment) { question.files.attach(create_file_blob) }
@@ -60,16 +62,17 @@ describe Ability, type: :model do
     end
 
     context 'PATCH #accept' do
-      it { should be_able_to :accept, create(:answer, question_id: question.id, user_id: user.id) }
-      it { should_not be_able_to :accept, create(:answer, question_id: other_question.id, user_id: user.id) }
+      it { should be_able_to :accept, answer }
+      it { should be_able_to :accept, other_answer }
+      it { should_not be_able_to :accept, create(:answer, question: other_question, user_id: user.id) }
     end
 
     context 'POST #vote' do
-      it { should be_able_to :vote, create(:question, user_id: other.id) }
-      it { should_not be_able_to :vote, create(:question, user_id: user.id) }
+      it { should be_able_to :vote, other_question }
+      it { should_not be_able_to :vote, question }
 
-      it { should be_able_to :vote, create(:answer, question_id: question.id, user_id: other.id) }
-      it { should_not be_able_to :vote, create(:answer, question_id: question.id, user_id: user.id) }
+      it { should be_able_to :vote, other_answer }
+      it { should_not be_able_to :vote, answer }
     end
   end
 end
