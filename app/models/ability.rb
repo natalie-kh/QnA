@@ -31,5 +31,6 @@ class Ability
     can :vote, [Question, Answer] do |votable|
       !user.author?(votable)
     end
+    can :me, User
   end
 end
