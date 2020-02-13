@@ -1,5 +1,4 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
-  include Rails.application.routes.url_helpers
 
   before_action :load_question, only: %i[update destroy]
 

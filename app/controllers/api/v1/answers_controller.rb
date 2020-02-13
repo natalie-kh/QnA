@@ -2,8 +2,6 @@ class Api::V1::AnswersController < Api::V1::BaseController
   before_action :load_question, only: %i[create]
   before_action :load_answer, only: %i[destroy update]
 
-  skip_before_action :verify_authenticity_token, only: %i[create update]
-
   authorize_resource
 
   def show
