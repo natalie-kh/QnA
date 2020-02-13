@@ -1,11 +1,11 @@
 FactoryBot.define do
   factory :comment do
     body { 'Comment body' }
-    association :user, factory: :user
+    association :user
 
     trait :invalid do
       body { nil }
-      association :user, factory: :user
+      association :user
     end
   end
 end

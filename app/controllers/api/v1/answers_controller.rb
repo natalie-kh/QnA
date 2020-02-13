@@ -1,12 +1,16 @@
 class Api::V1::AnswersController < Api::V1::BaseController
-  before_action :load_question, only: %i[create]
-  before_action :load_answer, only: %i[destroy update]
+  before_action :load_question, only: %i[create index]
+  before_action :load_answer, only: %i[show destroy update]
 
   authorize_resource
 
   def show
-    answer = Answer.with_attached_files.find(params['id'])
-    render json: answer, serializer: AnswerSerializer
+    render json: @answer
+  end
+
+  def index
+    @answers = @question.answers.includes(:user)
+    render json: @answers, each_serializer: AnswersSerializer
   end
 
   def create

@@ -17,9 +17,9 @@ describe 'Answers API', type: :request do
     context 'authorized' do
       let(:access_token) { create(:access_token) }
       let(:answer_response) { json['answer'] }
-      let!(:links) { create_list(:link, 3, linkable: answer) }
-      let!(:comments) { create_list(:comment, 3, commentable: answer) }
-      let!(:files) { 3.times { answer.files.attach(create_file_blob) } }
+      let!(:links) { create_list(:link, 2, linkable: answer) }
+      let!(:comments) { create_list(:comment, 2, commentable: answer) }
+      let!(:files) { 2.times { answer.files.attach(create_file_blob) } }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
@@ -68,7 +68,7 @@ describe 'Answers API', type: :request do
         let(:file_response) { answer_response['files'].first }
 
         it 'returns list of files' do
-          expect(answer_response['files'].size).to eq 3
+          expect(answer_response['files'].size).to eq 2
         end
 
         it 'returns filename and URL' do

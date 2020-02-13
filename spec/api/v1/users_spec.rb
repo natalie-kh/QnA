@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Profiles API', type: :request do
+describe 'users API', type: :request do
   let(:headers) do
     { 'CONTENT-TYPE': 'application/json',
       'ACCEPT': 'application/json' }
@@ -38,7 +38,7 @@ describe 'Profiles API', type: :request do
   end
 end
 
-describe 'Profiles List API', type: :request do
+describe 'Users List API', type: :request do
   let(:headers) do
     { 'CONTENT-TYPE': 'application/json',
       'ACCEPT': 'application/json' }

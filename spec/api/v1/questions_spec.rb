@@ -18,7 +18,7 @@ describe 'Questions API', type: :request do
       let!(:questions) { create_list(:question, 2) }
       let(:question) { questions.first }
       let(:question_response) { json['questions'].first }
-      let!(:answers) { create_list(:answer, 3, question: question) }
+      let!(:answers) { create_list(:answer, 2, question: question) }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
@@ -72,9 +72,9 @@ describe 'Questions API', type: :request do
     context 'authorized' do
       let(:access_token) { create(:access_token) }
       let(:question_response) { json['question'] }
-      let!(:links) { create_list(:link, 3, linkable: question) }
-      let!(:comments) { create_list(:comment, 3, commentable: question) }
-      let!(:files) { 3.times { question.files.attach(create_file_blob) } }
+      let!(:links) { create_list(:link, 2, linkable: question) }
+      let!(:comments) { create_list(:comment, 2, commentable: question) }
+      let!(:files) { 2.times { question.files.attach(create_file_blob) } }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
@@ -123,7 +123,7 @@ describe 'Questions API', type: :request do
         let(:file_response) { question_response['files'].first }
 
         it 'returns list of files' do
-          expect(question_response['files'].size).to eq 3
+          expect(question_response['files'].size).to eq 2
         end
 
         it 'returns filename and URL' do
@@ -144,7 +144,7 @@ describe 'Questions API', type: :request do
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
-      let!(:answers) { create_list(:answer, 3, question: question) }
+      let!(:answers) { create_list(:answer, 2, question: question) }
       let(:answer) { answers.first }
       let(:answer_response) { json['answers'].first }
 

@@ -1,6 +1,6 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
 
-  before_action :load_question, only: %i[update destroy]
+  before_action :load_question, only: %i[show update destroy]
 
   authorize_resource
 
@@ -10,8 +10,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def show
-    @question = Question.with_attached_files.find(params['id'])
-    render json: @question, serializer: QuestionSerializer
+    render json: @question
   end
 
   def create
@@ -25,11 +24,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def destroy
     @question.destroy!
-  end
-
-  def answers
-    @answers = Answer.includes(:user).where(question_id: params['id'])
-    render json: @answers, each_serializer: AnswersSerializer
   end
 
   private
