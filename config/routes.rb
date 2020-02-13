@@ -27,10 +27,10 @@ Rails.application.routes.draw do
         get :me, on: :collection
       end
 
-      resources :questions, only: [:show, :index] do
+      resources :questions, except: [:new, :edit] do
         get :answers, on: :member
 
-        resources :answers, only: [:show, :create, :update], shallow: true
+        resources :answers, except: [:new, :edit, :index], shallow: true
       end
     end
   end

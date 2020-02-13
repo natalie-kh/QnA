@@ -18,7 +18,10 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
   def update
     @answer.update!(answer_params)
-    head :no_content
+  end
+
+  def destroy
+    @answer.destroy!
   end
 
   private

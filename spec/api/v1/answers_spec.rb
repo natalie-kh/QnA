@@ -104,15 +104,19 @@ describe 'Answers API', type: :request do
           answer: { body: '', links_attributes: links } }
       end
 
+      it_behaves_like 'API Validatable' do
+        let(:method) { :post }
+      end
+
       context 'with valid attributes' do
-        before { post api_path, params: valid_params, headers: headers }
+        let(:request) { post api_path, params: valid_params, headers: headers }
 
         it 'creates new answer' do
-          expect(answer_response['body']).to eq('Answer Body')
-          expect(question.answers.first.body).to eq 'Answer Body'
+          expect { request }.to change(Answer, :count).by(1)
         end
 
         it 'returns 201 status' do
+          request
           expect(response.status).to eq 201
         end
 
@@ -121,21 +125,9 @@ describe 'Answers API', type: :request do
           let(:link_response) { answer_response['links'].first }
 
           it 'returns list of links' do
+            request
             expect(answer_response['links'].size).to eq links.size
           end
-        end
-      end
-
-      context 'with invalid attributes' do
-        before { post api_path, params: invalid_params, headers: headers }
-
-        it 'returns 422 status' do
-          expect(response.status).to eq 422
-        end
-
-        it 'returns a validation failure message' do
-          expect(response.body)
-            .to match(/Validation failed: Body can't be blank/)
         end
       end
     end
@@ -159,6 +151,10 @@ describe 'Answers API', type: :request do
       let(:invalid_params) { { access_token: mine_access_token.token, answer: { body: '' } } }
       let(:other_user_params) { { access_token: other_access_token.token, answer: { body: 'Updated Answer Body' } } }
 
+      it_behaves_like 'API Validatable' do
+        let(:method) { :put }
+      end
+
       context 'with valid attributes' do
         before { put api_path, params: valid_params, headers: headers }
 
@@ -172,19 +168,6 @@ describe 'Answers API', type: :request do
         end
       end
 
-      context 'with invalid attributes' do
-        before { put api_path, params: invalid_params, headers: headers }
-
-        it 'returns 422 status' do
-          expect(response.status).to eq 422
-        end
-
-        it 'returns a validation failure message' do
-          expect(response.body)
-            .to match(/Validation failed: Body can't be blank/)
-        end
-      end
-
       context 'for not author' do
         before { put api_path, params: other_user_params, headers: headers }
 
@@ -195,6 +178,49 @@ describe 'Answers API', type: :request do
         it 'does not update the answer' do
           updated_answer = Answer.find(answer.id)
           expect(updated_answer.body).to eq 'Answer body'
+        end
+      end
+    end
+  end
+
+  describe 'DELETE /api/v1/answers/:id' do
+    let(:me) { create(:user) }
+    let(:other_user) { create(:user) }
+    let(:headers) { { 'ACCEPT': 'application/json' } }
+    let!(:answer) { create(:answer, user: me) }
+    let(:api_path) { "/api/v1/answers/#{answer.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+    end
+
+    context 'authorized' do
+      let(:mine_access_token) { create(:access_token, resource_owner_id: me.id) }
+      let(:other_access_token) { create(:access_token, resource_owner_id: other_user.id) }
+
+      context 'for answer author' do
+        let(:request) { delete api_path, params: { access_token: mine_access_token.token }, headers: headers }
+
+        it 'returns 204 status' do
+          request
+          expect(response.status).to eq 204
+        end
+
+        it 'deletes the answer' do
+          expect { request }.to change(Answer, :count).by(-1)
+        end
+      end
+
+      context 'for not author' do
+        let(:request) { delete api_path, params: { access_token: other_access_token.token }, headers: headers }
+
+        it 'returns 403 status' do
+          request
+          expect(response.status).to eq 403
+        end
+
+        it 'does not delete the answer' do
+          expect { request }.to_not change(Answer, :count)
         end
       end
     end

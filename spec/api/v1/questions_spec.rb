@@ -169,4 +169,150 @@ describe 'Questions API', type: :request do
       end
     end
   end
+
+  describe 'POST /api/v1/questions/' do
+    let(:headers) { { 'ACCEPT': 'application/json' } }
+    let(:api_path) { '/api/v1/questions' }
+    let(:question_response) { json['question'] }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :post }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+      let(:links) do
+        [{ name: 'first link', url: 'https://first_link.com' },
+         { name: 'second link', url: 'https://second_link.com' }]
+      end
+      let(:valid_params) do
+        { access_token: access_token.token,
+          question: { title: 'New Question Title', body: 'New Question Body', links_attributes: links } }
+      end
+      let(:invalid_params) do
+        { access_token: access_token.token,
+          question: { title: 'New Question Title', body: '', links_attributes: links } }
+      end
+
+      it_behaves_like 'API Validatable' do
+        let(:method) { :post }
+      end
+
+      context 'with valid attributes' do
+        let(:request) { post api_path, params: valid_params, headers: headers }
+
+        it 'creates new question' do
+          expect { request }.to change(Question, :count).by(1)
+        end
+
+        it 'returns 201 status' do
+          request
+          expect(response.status).to eq 201
+        end
+
+        describe 'links' do
+          let(:link) { links.first }
+          let(:link_response) { question_response['links'].first }
+
+          it 'returns list of links' do
+            request
+            expect(question_response['links'].size).to eq links.size
+          end
+        end
+      end
+    end
+  end
+
+  describe 'PUT /api/v1/questions/:id' do
+    let(:me) { create(:user) }
+    let(:other_user) { create(:user) }
+    let(:headers) { { 'ACCEPT': 'application/json' } }
+    let!(:question) { create(:question, user: me) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :put }
+    end
+
+    context 'authorized' do
+      let(:mine_access_token) { create(:access_token, resource_owner_id: me.id) }
+      let(:other_access_token) { create(:access_token, resource_owner_id: other_user.id) }
+      let(:valid_params) { { access_token: mine_access_token.token, question: { body: 'Updated Question Body' } } }
+      let(:invalid_params) { { access_token: mine_access_token.token, question: { body: '' } } }
+      let(:other_user_params) { { access_token: other_access_token.token, question: { body: 'Updated Question Body' } } }
+
+      it_behaves_like 'API Validatable' do
+        let(:method) { :put }
+      end
+
+      context 'with valid attributes' do
+        before { put api_path, params: valid_params, headers: headers }
+
+        it 'returns 204 status' do
+          expect(response.status).to eq 204
+        end
+
+        it 'updates the question' do
+          updated_question = Question.find(question.id)
+          expect(updated_question.body).to eq 'Updated Question Body'
+        end
+      end
+
+      context 'for not author' do
+        before { put api_path, params: other_user_params, headers: headers }
+
+        it 'returns 403 status' do
+          expect(response.status).to eq 403
+        end
+
+        it 'does not update the answer' do
+          updated_question = Question.find(question.id)
+          expect(updated_question.body).to eq 'MyText'
+        end
+      end
+    end
+  end
+
+  describe 'DELETE /api/v1/questions/:id' do
+    let(:me) { create(:user) }
+    let(:other_user) { create(:user) }
+    let(:headers) { { 'ACCEPT': 'application/json' } }
+    let!(:answer) { create(:answer, user: me) }
+    let(:api_path) { "/api/v1/answers/#{answer.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+    end
+
+    context 'authorized' do
+      let(:mine_access_token) { create(:access_token, resource_owner_id: me.id) }
+      let(:other_access_token) { create(:access_token, resource_owner_id: other_user.id) }
+
+      context 'for answer author' do
+        let(:request) { delete api_path, params: { access_token: mine_access_token.token }, headers: headers }
+
+        it 'returns 204 status' do
+          request
+          expect(response.status).to eq 204
+        end
+
+        it 'deletes the answer' do
+          expect { request }.to change(Answer, :count).by(-1)
+        end
+      end
+
+      context 'for not author' do
+        let(:request) { delete api_path, params: { access_token: other_access_token.token }, headers: headers }
+
+        it 'returns 403 status' do
+          request
+          expect(response.status).to eq 403
+        end
+
+        it 'does not delete the answer' do
+          expect { request }.to_not change(Answer, :count)
+        end
+      end
+    end
+  end
 end
