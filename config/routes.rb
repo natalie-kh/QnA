@@ -29,6 +29,8 @@ Rails.application.routes.draw do
 
       resources :questions, only: [:show, :index] do
         get :answers, on: :member
+
+        resources :answers, only: [:show, :create, :update], shallow: true
       end
     end
   end
