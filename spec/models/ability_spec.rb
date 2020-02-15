@@ -47,7 +47,7 @@ describe Ability, type: :model do
 
     context 'DELETE #destroy' do
       it { should be_able_to :destroy, question }
-      it { should_not be_able_to :destroy, other_question  }
+      it { should_not be_able_to :destroy, other_question }
 
       it { should be_able_to :destroy, answer }
       it { should_not be_able_to :destroy, other_answer }

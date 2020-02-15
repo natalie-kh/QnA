@@ -31,5 +31,7 @@ class Ability
     can :vote, [Question, Answer] do |votable|
       !user.author?(votable)
     end
+    can %i[me index], User
+    can :answers, Question
   end
 end

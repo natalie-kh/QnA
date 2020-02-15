@@ -21,4 +21,13 @@ RSpec.describe Link, type: :model do
       expect(Link.new(url: not_gist_url)).not_to be_gist
     end
   end
+
+  context '.default_scope' do
+    let(:question) { create(:question) }
+    let!(:links) { create_list(:link, 2, linkable: question) }
+
+    it 'should sort array by created_at date' do
+      expect(question.links.to_a).to be_eql [links.first, links.second]
+    end
+  end
 end

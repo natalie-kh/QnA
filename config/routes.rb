@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  use_doorkeeper
   concern :votable do
     member { post :vote }
   end
@@ -19,6 +20,18 @@ Rails.application.routes.draw do
   resources :attachments, only: [:destroy]
 
   resources :awards, only: [:index]
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [:index], controller: 'users' do
+        get :me, on: :collection
+      end
+
+      resources :questions, except: [:new, :edit] do
+        resources :answers, except: [:new, :edit], shallow: true
+      end
+    end
+  end
 
   root to: 'questions#index'
 end
