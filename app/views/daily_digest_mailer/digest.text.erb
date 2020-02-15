@@ -1,0 +1,5 @@
+Hello! There are some new questions on Q&A
+============================================
+<% @questions.each do |question| %>
+  - <%=question.title%> : <%=question_url(question)%>
+<% end %>
