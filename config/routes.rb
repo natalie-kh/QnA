@@ -27,6 +27,8 @@ Rails.application.routes.draw do
 
   resources :awards, only: [:index]
 
+  resources :subscriptions, only: [:create, :destroy]
+
   namespace :api do
     namespace :v1 do
       resources :profiles, only: [:index], controller: 'users' do

@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :awards, dependent: :nullify
   has_many :votes, dependent: :destroy
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
@@ -14,6 +15,10 @@ class User < ApplicationRecord
 
   def author?(object)
     object.user_id == id
+  end
+
+  def subscribed?(question)
+    subscriptions.where(question_id: question.id).limit(1).present?
   end
 
   def self.find_for_oauth(auth)

@@ -27,6 +27,8 @@ describe Ability, type: :model do
     let(:other_question) { build :question, user_id: other.id }
     let(:answer) { build(:answer, question: question, user_id: user.id) }
     let(:other_answer) { build(:answer, question: question, user_id: other.id) }
+    let(:subscription) { build(:subscription, question: question, user_id: user.id) }
+    let(:other_subscription) { build(:subscription, question: question, user_id: other.id) }
 
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, Award }
@@ -35,6 +37,7 @@ describe Ability, type: :model do
       it { should be_able_to :create, Question }
       it { should be_able_to :create, Answer }
       it { should be_able_to :create, Comment }
+      it { should be_able_to :create, Subscription }
     end
 
     context 'PUT #update' do
@@ -51,6 +54,9 @@ describe Ability, type: :model do
 
       it { should be_able_to :destroy, answer }
       it { should_not be_able_to :destroy, other_answer }
+
+      it { should be_able_to :destroy, subscription }
+      it { should_not be_able_to :destroy, other_subscription }
 
       context 'attachments' do
         let!(:attachment) { question.files.attach(create_file_blob) }
