@@ -34,3 +34,4 @@ yarn-debug.log*
 .idea
 .rubocop.yml
 .env
+dump.rdb

@@ -36,7 +36,10 @@ gem 'oj'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
+gem 'sidekiq'
+gem 'sinatra', require: false
 gem 'slim-rails'
+gem 'whenever', require: false
 
 # UI
 gem 'bootstrap', '~> 4.3.0'
