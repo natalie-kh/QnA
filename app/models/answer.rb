@@ -3,6 +3,8 @@ class Answer < ApplicationRecord
   include Votable
   include Commentable
 
+  after_create :send_new_answer
+
   belongs_to :question
   belongs_to :user
 
@@ -20,5 +22,9 @@ class Answer < ApplicationRecord
       update!(accepted: true)
       question.award&.update!(user: user)
     end
+  end
+
+  def send_new_answer
+    NewAnswerJob.perform_later(self)
   end
 end

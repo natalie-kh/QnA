@@ -48,7 +48,6 @@ RSpec.describe SubscriptionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-
     context 'for subscribed user' do
       before { login(author) }
 
