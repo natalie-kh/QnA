@@ -46,4 +46,44 @@ RSpec.describe SubscriptionsController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+
+    context 'for subscribed user' do
+      before { login(author) }
+
+      it 'deletes the subscription' do
+        expect { delete :destroy, params: { id: question.subscriptions.first }, format: :js }.to change(Subscription, :count).by(-1)
+      end
+
+      it 'renders destroy view' do
+        delete :destroy, params: { id: question.subscriptions.first, format: :js }
+        expect(response).to render_template :destroy
+      end
+    end
+
+    context 'for not subscribed user' do
+      before { login(user) }
+
+      it "doesn't delete the subscription" do
+        expect { delete :destroy, params: { id: question.subscriptions.first }, format: :js }.not_to change(Subscription, :count)
+      end
+
+      it 'returns 403: Forbidden' do
+        delete :destroy, params: { id: question.subscriptions.first }, format: :js
+        expect(response.status).to eq 403
+      end
+    end
+
+    context 'for unauthorized user' do
+      it "doesn't delete the subscription" do
+        expect { delete :destroy, params: { id: question.subscriptions.first }, format: :js }.not_to change(Subscription, :count)
+      end
+
+      it 'returns 401: Unauthorized' do
+        delete :destroy, params: { id: question.subscriptions.first }, format: :js
+        expect(response.status).to eq 401
+      end
+    end
+  end
 end

@@ -21,13 +21,13 @@ Rails.application.routes.draw do
     resources :answers, shallow: true, only: [:create, :destroy, :update], concerns: [:votable, :commentable] do
       patch :accept, on: :member
     end
+
+    resources :subscriptions, only: [:create, :destroy], shallow: true
   end
 
   resources :attachments, only: [:destroy]
 
   resources :awards, only: [:index]
-
-  resources :subscriptions, only: [:create, :destroy]
 
   namespace :api do
     namespace :v1 do
