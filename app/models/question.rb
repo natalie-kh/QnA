@@ -3,7 +3,7 @@ class Question < ApplicationRecord
   include Votable
   include Commentable
 
-  after_create :create_subscription
+  after_create :create_subscription!
 
   has_many :answers, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
@@ -19,7 +19,7 @@ class Question < ApplicationRecord
 
   private
 
-  def create_subscription
-    subscriptions.create!(user_id: user_id)
+  def create_subscription!
+    subscriptions.create!(user: user)
   end
 end

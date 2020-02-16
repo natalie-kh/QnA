@@ -16,7 +16,7 @@ feature 'Authenticated User can subscribe to Question', "
 
       click_on 'Subscribe'
 
-      expect(page).to (have_content 'Question subscription successfully created.', wait: 5)
+      expect(page).to (have_content 'Question subscription successfully created.')
       expect(page).to have_link 'Unsubscribe'
       expect(page).to have_no_link 'Subscribe'
     end

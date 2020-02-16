@@ -3,7 +3,7 @@ class Answer < ApplicationRecord
   include Votable
   include Commentable
 
-  after_create :send_new_answer
+  after_commit :send_new_answer, on: :create
 
   belongs_to :question
   belongs_to :user

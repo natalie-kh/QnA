@@ -24,9 +24,16 @@ RSpec.describe Question, type: :model do
   describe '#create_subscription' do
     let(:question) { build(:question) }
 
-    it 'triggers #create_subscription on save' do
-      expect(question).to receive(:create_subscription)
+    it 'triggers #create_subscription! on save' do
+      expect(question).to receive(:create_subscription!)
       question.save
+    end
+
+    it 'creates new subscription' do
+      expect(question.subscriptions).to be_empty
+      question.save
+
+      expect(question.subscriptions).not_to be_empty
     end
   end
 end
