@@ -36,7 +36,10 @@ gem 'oj'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
+gem 'sidekiq'
+gem 'sinatra', require: false
 gem 'slim-rails'
+gem 'whenever', require: false
 
 # UI
 gem 'bootstrap', '~> 4.3.0'
@@ -56,6 +59,7 @@ end
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
+  gem 'letter_opener'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring

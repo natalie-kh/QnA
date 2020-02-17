@@ -24,14 +24,13 @@ class Ability
   def user_ability
     guest_ability
     can :read, Award
-    can :create, [Question, Answer, Comment]
-    can %i[update destroy], [Question, Answer, Comment], user_id: user.id
+    can :create, [Question, Answer, Comment, Subscription]
+    can %i[update destroy], [Question, Answer, Comment, Subscription], user_id: user.id
     can :accept, Answer, question: { user_id: user.id }
     can :destroy, ActiveStorage::Attachment, record: { user_id: user.id }
     can :vote, [Question, Answer] do |votable|
       !user.author?(votable)
     end
     can %i[me index], User
-    can :answers, Question
   end
 end
