@@ -30,10 +30,7 @@ RSpec.describe Question, type: :model do
     end
 
     it 'creates new subscription' do
-      expect(question.subscriptions).to be_empty
-      question.save
-
-      expect(question.subscriptions).not_to be_empty
+      expect{ question.save }.to change(Subscription, :count).by(1)
     end
   end
 end
