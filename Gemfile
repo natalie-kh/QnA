@@ -40,6 +40,8 @@ gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'slim-rails'
 gem 'whenever', require: false
+gem 'mysql2', '0.4.9'
+gem 'thinking-sphinx'
 
 # UI
 gem 'bootstrap', '~> 4.3.0'
