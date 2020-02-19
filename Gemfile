@@ -32,6 +32,7 @@ gem 'cancancan'
 gem 'devise'
 gem 'doorkeeper'
 gem 'gon'
+gem 'mysql2', '0.4.9'
 gem 'oj'
 gem 'omniauth'
 gem 'omniauth-facebook'
@@ -39,9 +40,8 @@ gem 'omniauth-github'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'slim-rails'
-gem 'whenever', require: false
-gem 'mysql2', '0.4.9'
 gem 'thinking-sphinx'
+gem 'whenever', require: false
 
 # UI
 gem 'bootstrap', '~> 4.3.0'
@@ -54,6 +54,7 @@ gem 'aws-sdk-s3', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'database_cleaner'
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'rspec-rails', '~> 4.0.0.beta3'

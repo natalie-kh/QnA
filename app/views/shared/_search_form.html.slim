@@ -1,0 +1,6 @@
+.search
+  = form_tag search_path, class: 'form-inline', method: :get do
+    = search_field_tag :query, params[:query],  placeholder: 'Enter search term...', class: 'form-control'
+    = select_tag :resource, options_for_select(SearchService::RESOURCES, params[:resource]), prompt: 'Everywhere', class: 'form-control mr-2'
+    = submit_tag 'Search', class: 'btn btn-outline-secondary'
+p

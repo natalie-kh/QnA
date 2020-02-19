@@ -1,0 +1,4 @@
+hr
+.mb-0
+  h4= link_to resource.question.title.truncate(100), question_path(resource.question)
+  p.answer= resource.body.truncate(100)

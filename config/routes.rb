@@ -41,5 +41,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'search', to: 'search#show'
+
   root to: 'questions#index'
 end

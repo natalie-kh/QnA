@@ -1,0 +1,5 @@
+-link_text, question = get_comment_question(resource)
+hr
+.mb-0
+  h4= link_to link_text, question_path(question)
+  p.comment= resource.body.truncate(100)
