@@ -2,6 +2,6 @@ class SearchController < ApplicationController
   skip_authorization_check
 
   def show
-    @results = SearchService.new(params[:query], params[:resource]).call
+    @results = SearchService.call(query: params[:query], resource: params[:resource])
   end
 end

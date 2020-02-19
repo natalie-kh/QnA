@@ -1,5 +1,7 @@
--link_text, question = get_comment_question(resource)
 hr
 .mb-0
-  h4= link_to link_text, question_path(question)
+  -if resource.commentable_type == 'Question'
+    h4= link_to resource.commentable.title, question_path(resource.commentable)
+  -else
+    h4= link_to resource.commentable.body, resource.commentable.question
   p.comment= resource.body.truncate(100)
