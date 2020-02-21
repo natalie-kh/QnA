@@ -1,0 +1,9 @@
+= render 'shared/search_form'
+br
+.results
+  -if @results.present?
+    h4 Searching results:
+    -@results.each do |result|
+      =render "search/#{result.class.name.downcase}", resource: result
+  -else
+    h4 No results found

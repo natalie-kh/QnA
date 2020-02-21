@@ -1,0 +1,7 @@
+hr
+.mb-0
+  -if resource.commentable_type == 'Question'
+    h4= link_to resource.commentable.title, question_path(resource.commentable)
+  -else
+    h4= link_to resource.commentable.body, resource.commentable.question
+  p.comment= resource.body.truncate(100)
