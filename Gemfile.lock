@@ -417,7 +417,6 @@ DEPENDENCIES
   doorkeeper
   dotenv-rails
   ed25519 (>= 1.2, < 2.0)
-  execjs
   factory_bot_rails
   gon
   jbuilder (~> 2.7)
