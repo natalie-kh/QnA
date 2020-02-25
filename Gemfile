@@ -42,7 +42,6 @@ gem 'omniauth-github'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'slim-rails'
-gem 'therubyracer'
 gem 'thinking-sphinx'
 gem 'whenever', require: false
 
