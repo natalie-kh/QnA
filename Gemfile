@@ -70,7 +70,7 @@ group :development do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-passenger', require: false
-  gem 'capistrano-unicorn', :require => false
+  gem 'capistrano3-unicorn', require: false
 
   gem 'letter_opener'
   gem 'listen', '>= 3.0.5', '< 3.2'

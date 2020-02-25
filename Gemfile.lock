@@ -110,8 +110,8 @@ GEM
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
-    capistrano-unicorn (0.1.10)
-      capistrano
+    capistrano3-unicorn (0.2.1)
+      capistrano (~> 3.1, >= 3.1.0)
     capybara (3.31.0)
       addressable
       mini_mime (>= 0.1.3)
@@ -417,7 +417,7 @@ DEPENDENCIES
   capistrano-passenger
   capistrano-rails
   capistrano-rvm
-  capistrano-unicorn
+  capistrano3-unicorn
   capybara (>= 2.15)
   cocoon
   database_cleaner
