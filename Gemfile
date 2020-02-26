@@ -39,7 +39,7 @@ gem 'oj'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
-gem 'sidekiq'
+gem 'sidekiq', '< 6.0'
 gem 'sinatra', require: false
 gem 'slim-rails'
 gem 'thinking-sphinx'
@@ -66,10 +66,10 @@ group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'capistrano', require: false
   gem 'capistrano-bundler', require: false
+  gem 'capistrano-passenger', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
-  gem 'capistrano-passenger', require: false
-  gem 'capistrano3-unicorn', require: false
+  gem 'capistrano-sidekiq', require: false
 
   gem 'letter_opener'
   gem 'listen', '>= 3.0.5', '< 3.2'
