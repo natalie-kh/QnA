@@ -28,9 +28,8 @@ class Ability
     can %i[update destroy], [Question, Answer, Comment, Subscription], user_id: user.id
     can :accept, Answer, question: { user_id: user.id }
     can :destroy, ActiveStorage::Attachment, record: { user_id: user.id }
-    can :vote, [Question, Answer] do |votable|
-      !user.author?(votable)
-    end
+    can :vote, [Question, Answer]
+    cannot :vote, [Question, Answer], user_id: user.id
     can %i[me index], User
   end
 end
