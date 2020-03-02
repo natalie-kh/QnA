@@ -1,4 +1,4 @@
--cache ['comment_form', resource] do
+- cache ['comment_form', resource]
   = form_with model: [resource, Comment.new], html: {id: "new-comment-form"} do |f|
     div[class='form-inline float-sm-right new_comment']
       = f.text_field :body, placeholder: 'Your comment', class: 'form-control'
