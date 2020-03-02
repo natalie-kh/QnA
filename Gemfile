@@ -39,6 +39,7 @@ gem 'oj'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
+gem 'redis-rails'
 gem 'sidekiq', '< 6.0'
 gem 'sinatra', require: false
 gem 'slim-rails'

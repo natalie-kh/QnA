@@ -1,50 +1,51 @@
-div.answer class= "answer-#{answer.id}"
-  div.card class= "answer-#{answer.id}"
-    div.card-body
-      .btn-group
-        .w-30.p-2
-          div.rating
-            = render 'shared/rating', resource: answer
-        .w-70.p-2
-          p.card-text= answer.body
-          div.files
-            = render 'shared/files', resource: answer
-          div.links
-            = render 'shared/links', resource: answer
-      p
-      .btn-group
-        -if can?(:update, answer)
-          .col
-            = link_to 'Delete', answer_path(answer), method: :delete, remote: true
-          .col
-            = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-        -if can?(:accept, answer) && !answer.accepted?
-          .col-12
-            = link_to 'Accept answer', accept_answer_path(answer), method: :patch, remote: true
+-cache [answer, current_user] do
+  div.answer class= "answer-#{answer.id}"
+    div.card class= "answer-#{answer.id}"
+      div.card-body
+        .btn-group
+          .w-30.p-2
+            div.rating
+              = render 'shared/rating', resource: answer
+          .w-70.p-2
+            p.card-text= answer.body
+            div.files
+              = render 'shared/files', resource: answer
+            div.links
+              = render 'shared/links', resource: answer
+        p
+        .btn-group
+          -if can?(:update, answer)
+            .col
+              = link_to 'Delete', answer_path(answer), method: :delete, remote: true
+            .col
+              = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+          -if can?(:accept, answer) && !answer.accepted?
+            .col-12
+              = link_to 'Accept answer', accept_answer_path(answer), method: :patch, remote: true
 
 
-  .comments
-    = render 'comments/comments', resource: answer
-    -if can?(:create, Comment)
-      = render 'comments/comment_form', resource: answer
-    br
-    br
+    .comments
+      = render 'comments/comments', resource: answer
+      -if can?(:create, Comment)
+        = render 'comments/comment_form', resource: answer
+      br
+      br
 
-  = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }  do |f|
-    div.form-group.row
-      = f.label :body, class:'col-sm-2 col-form-label'
-      div.col-sm-10
-        = f.text_area :body, placeholder: 'Edit answer', class: 'form-control'
+    = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }  do |f|
+      div.form-group.row
+        = f.label :body, class:'col-sm-2 col-form-label'
+        div.col-sm-10
+          = f.text_area :body, placeholder: 'Edit answer', class: 'form-control'
 
-    div.form-group.row
-      div.custom-file
-        = f.file_field :files, multiple: true, direct_upload: true, class: 'custom-file-input'
-        = f.label :files, 'Choose Files', class: 'custom-file-label'
+      div.form-group.row
+        div.custom-file
+          = f.file_field :files, multiple: true, direct_upload: true, class: 'custom-file-input'
+          = f.label :files, 'Choose Files', class: 'custom-file-label'
 
-    div.form-group.row
-      = render 'shared/link_form', f: f
+      div.form-group.row
+        = render 'shared/link_form', f: f
 
-    div.form-group.row
-      div.col-sm-10
-        = f.submit 'Save', class: 'btn btn-primary'
+      div.form-group.row
+        div.col-sm-10
+          = f.submit 'Save', class: 'btn btn-primary'
 
