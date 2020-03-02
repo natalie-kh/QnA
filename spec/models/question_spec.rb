@@ -33,4 +33,13 @@ RSpec.describe Question, type: :model do
       expect { question.save }.to change(Subscription, :count).by(1)
     end
   end
+
+  context '.default_scope' do
+    let(:user) { create(:user) }
+    let!(:questions) { create_list(:question, 2, user: user) }
+
+    it 'should sort array by created_at date' do
+      expect(user.questions.to_a).to be_eql [questions.second, questions.first]
+    end
+  end
 end

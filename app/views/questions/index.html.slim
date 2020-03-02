@@ -1,9 +1,10 @@
 = render 'shared/search_form'
 h1 All Questions
 
-div.card
-  div.questions
-    = render @questions
+- cache @questions
+  div.card
+    div.questions
+      = render @questions
 
 -if can?(:create, Question)
   p= link_to 'Ask Question', new_question_path

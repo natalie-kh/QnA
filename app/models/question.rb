@@ -17,6 +17,8 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
+  default_scope { order(created_at: :desc) }
+
   private
 
   def create_subscription!
